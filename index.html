@@ -101,6 +101,7 @@
     <div class="runbar">
       <button class="run" id="runBtn">▶ Run</button>
       <button id="stopBtn" title="Stop the running program where it is">■ Stop</button>
+      <button id="speakBtn" title="Dictate your program — Ember is made of sentences. Say 'quote' for a quote mark, 'new line' to end a line.">🎤 Speak</button>
       <button id="saveBtn" title="Download your program as a .ember file">Save</button>
       <button id="loadBtn" title="Open a .ember file from your computer">Load</button>
       <button id="explainBtn" title="Walk this program in plain language">Explain</button>
@@ -166,6 +167,8 @@
         <tr><td>Debug</td><td>run it out loud — every step narrated in plain words (<code>· line 4 — stars = 5</code>). Faults show themselves.</td></tr>
         <tr><td>Step</td><td>the debugger: one line at a time with Step / Continue / Stop — the current line named, every value visible as it changes.</td></tr>
         <tr><td>■ Stop</td><td>halt the running program where it is — a long animation or game stops cleanly between two statements, nothing half-done.</td></tr>
+        <tr><td>🎤 Speak</td><td>dictate your program — Ember is made of sentences. Say "quote" for a quote mark, "end quote" to close it, "new line" to end a line. Needs a browser with speech recognition; everything else works without it.</td></tr>
+        <tr><td>shorthand</td><td>for tired hands, at the start of a line + Enter: <code>rpt 5</code> → <code>repeat 5 times</code>, <code>fe name in names</code> → <code>for each…</code>, <code>gb x</code> → <code>give back x</code>, <code>oi score is 5</code> → <code>otherwise if … then</code>, <code>o</code> → <code>otherwise</code> — and block openers bring their own <code>end</code>. The saved file is always full Ember; only your fingers get the discount.</td></tr>
         <tr><td>Explain / Gift</td><td>Explain walks your program in plain language. Gift turns it into a single webpage file — it runs for whoever you give it to, forever, and they can open it up and remix it.</td></tr>
         <tr><td>color <i>name</i></td><td>set the drawing color. <code>color "tomato"</code></td></tr>
         <tr><td>dot <i>x y</i></td><td>a dot. Canvas is 400 × 400, <code>0 0</code> is top-left.</td></tr>
@@ -2516,6 +2519,120 @@ async function run(traceMode){
   }
 }
 
+/* ---------- Speak: dictation into the editor (the hands session) ----------
+   Ember is the rare language whose programs are sentences, so speech-to-text IS a
+   code editor here. Optional and graceful (the 2056 pattern): where the browser has
+   no ear, the button explains kindly and everything else works. Spoken conventions:
+   "quote" makes a quote mark, "end quote" closes it, "new line" ends a line. What
+   lands in the editor is ordinary canonical Ember — the file never knows it was spoken. */
+let listening = null; // the live recognizer, or null
+function speechToEmber(spoken){
+  let t = " " + String(spoken).toLowerCase() + " ";
+  t = t.replace(/\s(end|close)\s+quotes?(?=\s)/g, ' "');   // "end quote" closes (lookahead: adjacent tokens both match)
+  t = t.replace(/\s(open\s+)?quotes?(?=\s)/g, ' "');       // "quote" opens
+  t = t.replace(/\snew\s?line(?=\s)/g, "\n");
+  return t.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").replace(/^ | $/g, "");
+}
+function insertAtCursor(text){
+  const v = codeEl.value;
+  const start = (typeof codeEl.selectionStart === "number") ? codeEl.selectionStart : v.length;
+  const end = (typeof codeEl.selectionEnd === "number") ? codeEl.selectionEnd : start;
+  codeEl.value = v.slice(0, start) + text + v.slice(end);
+  try{ codeEl.selectionStart = codeEl.selectionEnd = start + text.length; }catch(e){}
+  autosave();
+}
+function toggleSpeak(){
+  const sys = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t + "\n"; outEl.appendChild(sp); };
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const btn = document.getElementById("speakBtn");
+  if(listening){ try{ listening.stop(); }catch(e){} listening = null; btn.textContent = "🎤 Speak"; return; }
+  if(!SR){ sys("(this browser has no ear — dictation needs a browser with speech recognition, like Edge or Chrome. Everything else works without it.)"); return; }
+  try{
+    const rec = new SR();
+    rec.continuous = true; rec.interimResults = false;
+    rec.lang = (typeof navigator !== "undefined" && navigator.language) || "en-US";
+    rec.onresult = (e)=>{
+      for(let i = e.resultIndex; i < e.results.length; i++){
+        if(e.results[i].isFinal){
+          const line = speechToEmber(e.results[i][0].transcript);
+          if(line) insertAtCursor(line + "\n");
+        }
+      }
+    };
+    rec.onerror = ()=>{ listening = null; btn.textContent = "🎤 Speak"; sys("(the ear closed — click Speak to try again)"); };
+    rec.onend = ()=>{ if(listening){ listening = null; btn.textContent = "🎤 Speak"; } };
+    rec.start();
+    listening = rec; btn.textContent = "● Listening… (click to stop)";
+    sys('(listening — speak one line at a time, like: set score to 10 … say "quote" for a quote mark, "new line" to end a line)');
+  }catch(e){ listening = null; sys("(the microphone couldn't open — everything else works without it)"); }
+}
+
+/* ---------- Steno-in, longhand-out: shorthand for tired hands (the hands session) ----------
+   Shorthand typed at the start of a line becomes canonical Ember the moment Enter
+   lands, and block openers bring their own 'end' (the most-forgotten word in the
+   language). The SAVED FILE is always full Ember — only the fingers get the discount. */
+const STENO = [
+  [/^(\s*)rpt\s+(.+)$/i, m => m[1] + "repeat " + m[2].trim() + (/times?\s*$/i.test(m[2]) ? "" : " times")],
+  [/^(\s*)fe\s+(\w+)\s+in\s+(.+)$/i, m => m[1] + "for each " + m[2] + " in " + m[3]],
+  [/^(\s*)gb\s+(.+)$/i, m => m[1] + "give back " + m[2]],
+  [/^(\s*)oi\s+(.+)$/i, m => m[1] + "otherwise if " + m[2].trim() + (/then\s*$/i.test(m[2]) ? "" : " then")],
+  [/^(\s*)o\s*$/i, m => m[1] + "otherwise"],
+];
+function openerClosedBelow(v, pos){
+  // is the opener whose line ends at pos already closed by the text BELOW it?
+  // walk down with depth 1 (our opener); reaching 0 means an 'end' belongs to it.
+  let d = 1;
+  const lines = v.slice(pos).split("\n");
+  for(let i = 1; i < lines.length; i++){     // lines[0] is the (empty) rest of the opener's own line
+    const t = lines[i].trim();
+    if(t === "" || t.startsWith("#")) continue;
+    const w = (t.match(/^([a-zA-Z_]+)/) || [,""])[1].toLowerCase();
+    if(["repeat","if","to","when","for"].includes(w)) d++;
+    else if(w === "end"){ d--; if(d === 0) return true; }
+  }
+  return false;
+}
+function handleEnterShorthand(e){
+  const v = codeEl.value;
+  const pos = (typeof codeEl.selectionStart === "number") ? codeEl.selectionStart : v.length;
+  const selEnd = (typeof codeEl.selectionEnd === "number") ? codeEl.selectionEnd : pos;
+  if(selEnd !== pos) return;                                  // a selection — stay out of the way
+  const nextNl = v.indexOf("\n", pos);
+  if(v.slice(pos, nextNl === -1 ? v.length : nextNl) !== "") return;  // mid-line Enter — stay out of the way
+  const lineStart = v.lastIndexOf("\n", pos - 1) + 1;
+  let line = v.slice(lineStart, pos);
+  let expanded = null;
+  for(const [re, out] of STENO){
+    const m = line.match(re);
+    if(m){
+      // never rewrite a line that is really a call to a user's own action of that name
+      const word = (line.trim().match(/^([a-zA-Z_]+)/) || [,""])[1];
+      if(word && new RegExp("^\\s*to\\s+" + word + "\\b", "mi").test(v)) break;
+      expanded = out(m); break;
+    }
+  }
+  let cursor = pos;
+  if(expanded !== null && expanded !== line){
+    codeEl.value = v.slice(0, lineStart) + expanded + v.slice(pos);
+    cursor = lineStart + expanded.length;
+    try{ codeEl.selectionStart = codeEl.selectionEnd = cursor; }catch(ex){}
+    line = expanded;
+    autosave();
+  }
+  // block openers bring their own end — but only if THIS opener isn't already closed below
+  const w = (line.trim().match(/^([a-zA-Z_]+)/) || [,""])[1].toLowerCase();
+  const opens = ["repeat","if","to","when"].includes(w) || /^for\s+each\b/i.test(line.trim());
+  if(opens && !openerClosedBelow(codeEl.value, cursor)){
+    e.preventDefault();
+    const indent = (line.match(/^\s*/) || [""])[0];
+    const v2 = codeEl.value;
+    const insertion = "\n" + indent + "  " + "\n" + indent + "end";
+    codeEl.value = v2.slice(0, cursor) + insertion + v2.slice(cursor);
+    try{ codeEl.selectionStart = codeEl.selectionEnd = cursor + 1 + indent.length + 2; }catch(ex){}
+    autosave();
+  }
+}
+
 /* ---------- Files button: show the pocket in the output pane ---------- */
 function showFiles(){
   outEl.textContent = "";
@@ -2563,6 +2680,8 @@ function explain(){
    and the person you give it to can read, change, and re-gift it. */
 function makeGift(){
   try{
+  // a gift is a snapshot of this page — close the ear first so the serialized button isn't frozen mid-listen
+  if(listening){ try{ listening.stop(); }catch(e){} listening = null; document.getElementById("speakBtn").textContent = "🎤 Speak"; }
   const src = ensureHeader(codeEl.value);
   codeEl.value = src; autosave();
   const head = readHeader(src);
@@ -2816,8 +2935,10 @@ document.getElementById("fileInput").addEventListener("change", e=>{
 });
 codeEl.addEventListener("input", autosave);
 codeEl.addEventListener("keydown", e=>{
-  if((e.ctrlKey || e.metaKey) && e.key === "Enter"){ e.preventDefault(); run(); }
+  if((e.ctrlKey || e.metaKey) && e.key === "Enter"){ e.preventDefault(); run(); return; }
+  if(e.key === "Enter") handleEnterShorthand(e);
 });
+document.getElementById("speakBtn").addEventListener("click", toggleSpeak);
 
 loadExamples();
 if(window.GIFT_PROGRAM !== undefined){
