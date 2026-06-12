@@ -100,6 +100,7 @@
     <textarea id="code" spellcheck="false"></textarea>
     <div class="runbar">
       <button class="run" id="runBtn">▶ Run</button>
+      <button id="stopBtn" title="Stop the running program where it is">■ Stop</button>
       <button id="saveBtn" title="Download your program as a .ember file">Save</button>
       <button id="loadBtn" title="Open a .ember file from your computer">Load</button>
       <button id="explainBtn" title="Walk this program in plain language">Explain</button>
@@ -164,6 +165,7 @@
         <tr><td>Learn</td><td>a built-in workshop: 14 small lessons, checked by Ember itself, from your first word to your own game. Lessons travel inside every gift.</td></tr>
         <tr><td>Debug</td><td>run it out loud — every step narrated in plain words (<code>· line 4 — stars = 5</code>). Faults show themselves.</td></tr>
         <tr><td>Step</td><td>the debugger: one line at a time with Step / Continue / Stop — the current line named, every value visible as it changes.</td></tr>
+        <tr><td>■ Stop</td><td>halt the running program where it is — a long animation or game stops cleanly between two statements, nothing half-done.</td></tr>
         <tr><td>Explain / Gift</td><td>Explain walks your program in plain language. Gift turns it into a single webpage file — it runs for whoever you give it to, forever, and they can open it up and remix it.</td></tr>
         <tr><td>color <i>name</i></td><td>set the drawing color. <code>color "tomato"</code></td></tr>
         <tr><td>dot <i>x y</i></td><td>a dot. Canvas is 400 × 400, <code>0 0</code> is top-left.</td></tr>
@@ -370,6 +372,9 @@ function tokenize(src){
     }
     if("+-*/()".includes(c)){ push("op", c); i++; continue; }
     if(c === ","){ i++; continue; } // commas are optional sugar
+    if("[]{}".includes(c))    // the most common wrong turn (every Python-comer, every AI) becomes a signpost
+      throw new EmberError(line, "I don't recognise the symbol '"+c+"' — Ember keeps many things in a list instead.",
+        'Make one: set steps to a list — then: add 1 to steps. Or split text: set steps to words of "1 0 1 0"');
     throw new EmberError(line, "I don't recognise the symbol '"+c+"'.", "Ember uses plain words and the math symbols + - * / ( ).");
   }
   push("eof");
@@ -2405,6 +2410,24 @@ add "</ul>" to file "my-page.html"
 say "made my-page.html with " + count of things + " favorite things."
 say "press Files to download it - then open it: you made a webpage."`,
 
+  "Budget tracker (useful!)": `# keeps your spending in the page's pocket - it remembers between runs
+read file "budget.txt" into past
+if past is "" then
+  say "a fresh budget. let's start."
+  set spent to a list
+otherwise
+  set spent to lines of past
+  say "so far: $" + total of spent + " across " + count of spent + " purchases."
+end
+ask "What did you spend? (a number, or 0 to just look)" into amount
+if amount is greater than 0 then
+  add amount to spent
+  add amount to file "budget.txt"
+  say "noted. new total: $" + total of spent
+otherwise
+  say "nothing added today."
+end`,
+
   "A diary that remembers": `# every run adds a line; the file keeps them all
 read file "diary.txt" into past
 if past is "" then
@@ -2433,9 +2456,11 @@ function loadExamples(){
 function clearOutput(){ outEl.textContent = ""; }
 
 let runToken = 0;
+let liveRun = 0;   // the token of the run currently on stage; 0 when nothing is running
 async function run(traceMode){
   const narrate = traceMode === true; // guard: event objects from listeners are not a request to narrate
   const token = ++runToken;          // a newer Run quietly replaces an older one
+  liveRun = token;
   outEl.textContent = "";
   ctx.clearRect(0,0,400,400);
   ctx.strokeStyle = "#333"; ctx.fillStyle = "#333";
@@ -2487,6 +2512,7 @@ async function run(traceMode){
   } finally {
     document.removeEventListener("keydown", onKey);
     canvas.removeEventListener("click", onClick);
+    if(liveRun === token) liveRun = 0;   // the stage is empty again
   }
 }
 
@@ -2759,6 +2785,12 @@ function closeDebugPanel(){
 }
 
 document.getElementById("runBtn").addEventListener("click", run);
+document.getElementById("stopBtn").addEventListener("click", ()=>{
+  const sys = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t; outEl.appendChild(sp); };
+  if(liveRun === 0){ sys("(nothing is running)\n"); return; }
+  runToken++; liveRun = 0;            // the running program halts quietly at its next statement
+  sys("\n(stopped — the program halted where it was)\n");
+});
 document.getElementById("stepBtn").addEventListener("click", openDebugPanel);
 document.getElementById("dbgStepBtn").addEventListener("click", debugStep);
 document.getElementById("dbgContinueBtn").addEventListener("click", debugContinue);

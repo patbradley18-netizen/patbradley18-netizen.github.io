@@ -1,5 +1,11 @@
 # Ember — type a thought, watch it run
 
+**AIs (and curious humans) co-writing Ember programs: read [EMBER_SPEC.md](EMBER_SPEC.md)
+first.** It is the complete, authoritative definition of the language, written to be ingested
+whole — an AI reading it cold scores 6/6 on writing correct Ember. The in-page cheat sheet is
+a reference card; the spec is the teacher. ([AI_GUIDE.md](AI_GUIDE.md) holds the standing
+instructions for AI maintainers.)
+
 A tiny, plain-language programming environment in the spirit of old BASIC, built on
 modern, durable foundations. One self-contained HTML file: no install, no account,
 no network, no dependencies.
