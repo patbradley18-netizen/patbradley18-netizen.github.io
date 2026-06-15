@@ -159,6 +159,7 @@
         <tr><td>otherwise if <i>test</i> then</td><td>chain choices without nesting — any number of links, one shared <code>end</code>. <code>if g is at least 90 then … otherwise if g is at least 80 then … otherwise … end</code></td></tr>
         <tr><td>total of, highest of,<br>lowest of, average of</td><td>one number from a whole list. <code>say total of scores</code> (sum/biggest/smallest/mean are understood too)</td></tr>
         <tr><td>words of, lines of</td><td>split text into a list. <code>for each word in words of reply … end</code> (blank lines are skipped)</td></tr>
+        <tr><td>letters of, letter <i>n</i> of</td><td>reach into text by character. <code>for each ch in letters of word … end</code> · <code>letter 1 of name</code> (letters start at 1)</td></tr>
         <tr><td>put <i>value</i> into file <i>"name"</i><br>add <i>value</i> to file <i>"name"</i></td><td>keep things between runs: <code>put</code> replaces the file, <code>add</code> appends a line. Plain names only — files live beside the program (in the terminal) or in the page's pocket (press Files). <code>put score into file "save.txt"</code></td></tr>
         <tr><td>read file <i>"name"</i> into <i>name</i></td><td>read a file's text back. A missing file reads as the empty text — programs should expect that. <code>read file "save.txt" into memory</code></td></tr>
         <tr><td>write <i>text</i> at <i>x y</i></td><td>put words on the canvas. <code>write "score: " + score at 20 30</code></td></tr>
@@ -262,9 +263,10 @@ function aggOf(op, v, line){
 }
 function splitOf(op, v, line){
   if(Array.isArray(v)) throw new EmberError(line, "'"+op+" of' needs text, not a list.",
-    op === "words" ? 'Like: words of "to be or not to be"' : "Like: lines of reply");
+    op === "words" ? 'Like: words of "to be or not to be"' : op === "letters" ? 'Like: letters of "hello"' : "Like: lines of reply");
   const s = toText(v);
   if(op === "words") return s.split(/\s+/).filter(w => w !== "");
+  if(op === "letters") return Array.from(s);   // every character, including spaces; one item per code point
   return s.split("\n").map(l => l.replace(/\r$/, "")).filter(l => l.trim() !== ""); // blank lines are skipped, kindly
 }
 /* A file's name must be plain (4.3, D25): the engine owns this fence so every
@@ -855,6 +857,20 @@ function parse(tokens){
         const v = parsePrimary();
         return {kind:"split", op:SPLIT_WORDS[lw], value:v, line:t.line};
       }
+      // letters of <text> — characters in the <word> of grammar (4.4). Soft word; a taught action 'letters' wins.
+      if(lw === "letters" && !actions["letters"] && tokens[p+1] && tokens[p+1].type === "keyword" && tokens[p+1].value === "of"){
+        next(); next();
+        const v = parsePrimary();
+        return {kind:"split", op:"letters", value:v, line:t.line};
+      }
+      // letter <n> of <text> — the n-th character (1-indexed). Soft word; a taught action 'letter' wins (frozen 'grade letters').
+      if(lw === "letter" && !actions["letter"] && tokens[p+1] && (tokens[p+1].type === "number" || tokens[p+1].type === "name" || (tokens[p+1].type === "op" && tokens[p+1].value === "("))){
+        next();
+        const idx = parseExpression();
+        eatKw("of", "'letter' needs 'of' — which text holds it?", 'Like: letter 1 of "hello"');
+        const txt = parsePrimary();
+        return {kind:"letterAt", index:idx, value:txt, line:t.line};
+      }
       // An action's name used where a value is expected IS the call (it must give back).
       // Longest name first, same as statement calls; arguments bind tightly (the random precedent).
       let words = [], j = p;
@@ -1156,6 +1172,19 @@ async function interpret(program, host){
       }
       case "agg": return aggOf(e.op, await evalExpr(e.value), e.line);
       case "split": return splitOf(e.op, await evalExpr(e.value), e.line);
+      case "letterAt": {
+        const idxv = await evalExpr(e.index);
+        const txt = await evalExpr(e.value);
+        if(Array.isArray(txt)) throw new EmberError(e.line, "'letter \u2026 of' needs text, not a list.", 'Like: letter 1 of "hello"');
+        const chars = Array.from(toText(txt));
+        const idx = asNumber(idxv, e.line, "'letter' needs a number first \u2014 which letter do I fetch?");
+        const k = Math.floor(idx);
+        if(k < 1 || k > chars.length) throw new EmberError(e.line,
+          chars.length === 0 ? "The text is empty \u2014 there is no letter "+toText(idx)+"."
+                             : "The text has "+chars.length+" letter"+(chars.length===1?"":"s")+" \u2014 there is no letter "+toText(idx)+".",
+          "Letter numbers go from 1 to the count (letters of <text>).");
+        return chars[k - 1];
+      }
       case "item": {
         const idxv = await evalExpr(e.index);
         const arr = await evalExpr(e.value);
@@ -1199,7 +1228,9 @@ async function interpret(program, host){
         const l = await evalExpr(e.left), r = await evalExpr(e.right);
         if(e.op === "+"){
           if(typeof l === "number" && typeof r === "number") return l + r;
-          return toText(l) + toText(r); // + also joins text
+          const joined = toText(l) + toText(r); // + also joins text
+          if(host.traceJoin && (typeof l === "number" || typeof r === "number")) host.traceJoin(e.line, joined); // Debug-only: a number was joined into text
+          return joined;
         }
         const ln = asNumber(l, e.line, "Math with '"+e.op+"' needs numbers."),
               rn = asNumber(r, e.line, "Math with '"+e.op+"' needs numbers.");
@@ -1307,6 +1338,7 @@ function explainProgram(src){
       case "agg": return "the " + e.op + " of " + ex(e.value);
       case "split": return "the " + e.op + " of " + ex(e.value);
       case "item": return "item " + ex(e.index) + " of " + ex(e.value);
+      case "letterAt": return "letter " + ex(e.index) + " of " + ex(e.value);
       case "callx": return "what \"" + e.name + "\" gives back" + (e.args.length ? " for " + e.args.map(ex).join(", ") : "");
     }
     return "?";
@@ -1410,6 +1442,7 @@ function compile(source){
       case "agg": expr(e.value); emit("AGG", {m: e.op, line: e.line}); return;
       case "split": expr(e.value); emit("SPL", {m: e.op, line: e.line}); return;
       case "item": expr(e.index); expr(e.value); emit("ITM", {line: e.line}); return;
+      case "letterAt": expr(e.index); expr(e.value); emit("LET", {line: e.line}); return;
       case "callx": { for(const a of e.args) expr(a); emit("CALV", {n: e.name, c: e.args.length, line: e.line}); return; }
       case "binary":
         expr(e.left); expr(e.right);
@@ -1583,7 +1616,11 @@ class VM {
         case "ST": { const v = this.stack.pop(); this.assign(I.n, v);
           if(I.t && host.traceSet) host.traceSet(I.raw, toText(v), I.line); break; }
         case "ADD": { const r = this.stack.pop(), l = this.stack.pop();
-          this.stack.push(typeof l === "number" && typeof r === "number" ? l + r : toText(l) + toText(r)); break; }
+          if(typeof l === "number" && typeof r === "number"){ this.stack.push(l + r); }
+          else { const joined = toText(l) + toText(r);
+            if(host.traceJoin && (typeof l === "number" || typeof r === "number")) host.traceJoin(I.line, joined); // Debug-only: a number joined into text
+            this.stack.push(joined); }
+          break; }
         case "SUB": { const r = asNumber(this.stack.pop(), I.line, "Math with '-' needs numbers."), l = asNumber(this.stack.pop(), I.line, "Math with '-' needs numbers."); this.stack.push(l - r); break; }
         case "MUL": { const r = asNumber(this.stack.pop(), I.line, "Math with '*' needs numbers."), l = asNumber(this.stack.pop(), I.line, "Math with '*' needs numbers."); this.stack.push(l * r); break; }
         case "DIV": { const r = asNumber(this.stack.pop(), I.line, "Math with '/' needs numbers."), l = asNumber(this.stack.pop(), I.line, "Math with '/' needs numbers.");
@@ -1640,6 +1677,16 @@ class VM {
                              : "The list has "+arr.length+" item"+(arr.length===1?"":"s")+" — there is no item "+toText(idx)+".",
             "Item numbers go from 1 to the count (count of <list>).");
           this.stack.push(arr[k - 1]); break; }
+        case "LET": { const txt = this.stack.pop(), idxv = this.stack.pop();
+          if(Array.isArray(txt)) throw new EmberError(I.line, "'letter \u2026 of' needs text, not a list.", 'Like: letter 1 of "hello"');
+          const chars = Array.from(toText(txt));
+          const idx = asNumber(idxv, I.line, "'letter' needs a number first \u2014 which letter do I fetch?");
+          const k = Math.floor(idx);
+          if(k < 1 || k > chars.length) throw new EmberError(I.line,
+            chars.length === 0 ? "The text is empty \u2014 there is no letter "+toText(idx)+"."
+                               : "The text has "+chars.length+" letter"+(chars.length===1?"":"s")+" \u2014 there is no letter "+toText(idx)+".",
+            "Letter numbers go from 1 to the count (letters of <text>).");
+          this.stack.push(chars[k - 1]); break; }
         case "ADDL": { const v = this.stack.pop();
           const target = this.lookup(I.raw, I.n, I.line);
           if(!Array.isArray(target)) throw new EmberError(I.line, "I can only add to a list — '"+I.raw+"' isn't one.",
@@ -2492,6 +2539,7 @@ async function run(traceMode){
     const dim = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t + "\n"; outEl.appendChild(sp); };
     host.trace = (kind, line) => { if(kind !== "set") dim("· line " + line + " — " + (NICE[kind] || kind)); };
     host.traceSet = (name, val, line) => dim("· line " + line + " — " + name + " = " + val);
+    host.traceJoin = (line, text) => dim('· line ' + line + ' — joined as text: "' + text + '"');
   }
   const src = codeEl.value;
   try{

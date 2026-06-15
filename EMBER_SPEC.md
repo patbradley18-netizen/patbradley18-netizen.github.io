@@ -1,4 +1,4 @@
-# Ember Language Specification — ember 4.3
+# Ember Language Specification — ember 4.4
 
 This is the complete, authoritative definition of the Ember language. It is written to be
 ingested whole by an AI (or read by a person) so that correct Ember programs can be written,
@@ -197,6 +197,16 @@ are the recommended style: `line x y (x + 30) (y - 30)`. Both forms are valid.
   compose: `count of words of reply`, `for each w in words of saying`, `item 2 of lines of
   reply`. Plain text typed in programs cannot hold a newline, so `lines of` earns its keep
   on web replies and other host-given text.
+- **Character access (4.4, D26):** `letters of <text>` is a list of the text's characters —
+  one item per Unicode code point, including spaces and punctuation; an empty text is the empty
+  list — the same `<word> of` shape as `words of`/`lines of`. `letter <n> of <text>` is the
+  n-th character, counting from 1 (a fractional index is floored, like `item … of`; an index
+  out of range is a teaching error naming the count; the operand must be text, not a list).
+  They compose with everything: `count of letters of word`, `for each ch in letters of name`,
+  `letter count of letters of word of word`. Like the aggregation and split words, `letter`
+  and `letters` are NOT reserved — they act special only in these phrases, and a taught action
+  named `letter`/`letters` always wins (the oath protects the frozen `grade letters` program,
+  which teaches an action called `letter`).
 - Number-to-text: integers print without a decimal point; other numbers are rounded to 6 decimal
   places. Booleans print as `yes` / `no`.
 
@@ -358,8 +368,9 @@ primary     = number | string | name | "true" | "false" | "-" primary | "(" expr
             | [ "a" | "an" ] , "list" (* a new empty list; "a list" is canonical *)
             | "count" , "of" , primary (* "count" is a phrase here, not a keyword *)
             | agg-word , "of" , primary (* 4.2: same quiet pattern; canonical total/highest/lowest/average; sum/biggest/largest/smallest/mean accepted in *)
-            | ("words"|"lines") , "of" , primary (* 4.2: text becomes a list; phrases, not keywords *)
+            | ("words"|"lines"|"letters") , "of" , primary (* 4.2: text→list; 4.4: letters — one item per character *)
             | "item" , expr , "of" , primary
+            | "letter" , expr , "of" , primary (* 4.4: the n-th character, 1-indexed; "letter" not reserved *)
             | action-name , { mul } (* one tight argument per input; the action must give back *) ;
 string      = '"' { char } '"' | "'" { char } "'" (* no escapes; no newlines *) ;
 agg-word    = "total" | "sum" | "highest" | "biggest" | "largest" | "lowest" | "smallest" | "average" | "mean" ;
@@ -369,7 +380,7 @@ commas ignored; names case-insensitive.
 
 ## 10. Versioning
 
-This document defines **ember 4.3** (0.1 = kickoff prototype; 0.2 added the .ember format,
+This document defines **ember 4.4** (0.1 = kickoff prototype; 0.2 added the .ember format,
 save/load, autosave; 0.3 added `wait`, `change … by`, forgiveness rules, did-you-mean errors,
 and the async interpreter; 0.4 added named actions — `to … with … end`, hoisting, private
 inputs, recursion guard; 1.0 — the magazine-test release — added `random`, `background`,
@@ -397,7 +408,12 @@ template, decided by Nero from the four-mission demand ("build a game, have soun
 webpage, create files"), fenced to plain names beside the program, with the kind silence for
 missing files and a canned-pocket corpus freeze so the oath never touches a real disk; the
 ruling supersedes the watchlist's earlier "files-as-such stay out" framing by Nero's charter
-authority, logged in D25). Behavior changes
+authority, logged in D25); 4.4 — the characters release — added **`letters of`** (text
+becomes a list of its characters) and **`letter <n> of`** (the n-th character, 1-indexed),
+the `<word> of` grammar reaching into text one character at a time, earned from two independent
+external reviews (D26); and made the silent `+` text-join VISIBLE in the Debug narrator (D27) —
+when a number is absorbed into text, Debug now says `joined as text: "…"`, changing no
+program's output (apparatus, not language). Behavior changes
 require: a frozen copy of this spec in `spec_archive/` (append-only, per release), a golden-
 corpus replay pass (`02_QUALITY/golden/` — old programs do not break, ever), and a bump of
 the version here and in `LANGUAGE_VERSION`
