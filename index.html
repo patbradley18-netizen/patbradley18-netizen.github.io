@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ember — type a thought, watch it run</title>
+<title>Ember â€” type a thought, watch it run</title>
 <style>
   :root{
     --bg:#1b1812; --panel:#262019; --ink:#f3ead9; --muted:#b3a489;
@@ -75,7 +75,7 @@
 </head>
 <body>
 <header>
-  <div class="logo"><span class="spark">✦</span> Ember</div>
+  <div class="logo"><span class="spark">âœ¦</span> Ember</div>
   <div class="tag">type a thought, watch it run</div>
   <div class="grow"></div>
   <label class="hint">Examples:</label>
@@ -89,9 +89,9 @@
       <div class="ltitle" id="lessonTitle"></div>
       <div class="lgoal" id="lessonGoal"></div>
       <div class="lrow">
-        <button class="run" id="checkBtn">✓ Check my work</button>
+        <button class="run" id="checkBtn">âœ“ Check my work</button>
         <button id="hintBtn">Hint</button>
-        <button id="nextBtn" style="display:none">Next lesson ▶</button>
+        <button id="nextBtn" style="display:none">Next lesson â–¶</button>
         <button id="exitLearnBtn">Exit the workshop</button>
         <span class="lprog" id="lessonProg"></span>
       </div>
@@ -99,16 +99,16 @@
     </div>
     <textarea id="code" spellcheck="false"></textarea>
     <div class="runbar">
-      <button class="run" id="runBtn">▶ Run</button>
-      <button id="stopBtn" title="Stop the running program where it is">■ Stop</button>
-      <button id="speakBtn" title="Dictate your program — Ember is made of sentences. Say 'quote' for a quote mark, 'new line' to end a line.">🎤 Speak</button>
+      <button class="run" id="runBtn">â–¶ Run</button>
+      <button id="stopBtn" title="Stop the running program where it is">â–  Stop</button>
+      <button id="speakBtn" title="Dictate your program â€” Ember is made of sentences. Say 'quote' for a quote mark, 'new line' to end a line.">ðŸŽ¤ Speak</button>
       <button id="saveBtn" title="Download your program as a .ember file">Save</button>
       <button id="loadBtn" title="Open a .ember file from your computer">Load</button>
       <button id="explainBtn" title="Walk this program in plain language">Explain</button>
-      <button id="debugBtn" title="Run it slowly out loud — every step narrated">Debug</button>
+      <button id="debugBtn" title="Run it slowly out loud â€” every step narrated">Debug</button>
       <button id="stepBtn" title="The debugger: run one line at a time, watching the values">Step</button>
       <button id="giftBtn" title="Turn this program into a webpage you can give to anyone">Gift</button>
-      <button id="filesBtn" title="The page's pocket: files your programs made — download or remove them">Files</button>
+      <button id="filesBtn" title="The page's pocket: files your programs made â€” download or remove them">Files</button>
       <button id="learnBtn" title="The workshop: 14 small lessons from your first word to your own game">Learn</button>
       <button id="clearBtn">Clear output</button>
       <input type="file" id="fileInput" accept=".ember,.txt" style="display:none">
@@ -116,7 +116,7 @@
     </div>
     <div id="debugPanel" style="display:none">
       <div class="drow">
-        <button class="run" id="dbgStepBtn">⏵ Step</button>
+        <button class="run" id="dbgStepBtn">âµ Step</button>
         <button id="dbgContinueBtn">Continue</button>
         <button id="dbgStopBtn">Stop</button>
         <span class="dline" id="dbgLine"></span>
@@ -134,52 +134,52 @@
       </div>
     </div>
     <div class="sheet">
-      <h3>Cheat sheet — the whole language</h3>
+      <h3>Cheat sheet â€” the whole language</h3>
       <table>
         <tr><td>say <i>thing</i></td><td>show text in the Output pane. <code>say "hello"</code></td></tr>
         <tr><td>set <i>name</i> to <i>value</i></td><td>remember a value. <code>set score to 10</code></td></tr>
         <tr><td>change <i>name</i> by <i>n</i></td><td>add to a value. <code>change score by 1</code> (same as <code>set score to score + 1</code>)</td></tr>
-        <tr><td>repeat <i>n</i> times … end</td><td>do the lines in between n times.</td></tr>
-        <tr><td>to <i>name</i> with <i>inputs</i> … end</td><td>teach Ember a new action, then use it by name. <code>to flower with x y … end</code>, later: <code>flower 100 120</code></td></tr>
-        <tr><td>give back <i>value</i></td><td>inside an action: stop and hand a value to whoever called. <code>to double with x</code> / <code>give back x * 2</code> / <code>end</code> — then <code>say double 5</code></td></tr>
-        <tr><td>set <i>name</i> to a list</td><td>one name, many things. <code>add "Nero" to names</code> · <code>count of names</code> · <code>item 2 of names</code> (items start at 1)</td></tr>
-        <tr><td>for each <i>thing</i> in <i>list</i> … end</td><td>do the lines once per item, in order. <code>for each name in names … end</code></td></tr>
-        <tr><td>if <i>test</i> then … otherwise … end</td><td>choose between two paths.</td></tr>
-        <tr><td>is, is not, is greater than,<br>is less than, is at least, is at most,<br>is even, is odd</td><td>ways to compare. <code>if score is at least 10 then</code> · <code>if n is even then</code></td></tr>
-        <tr><td>contains, does not contain</td><td>look inside text, ignoring case. <code>if reply contains "workforce" then</code> — numbers and lists are searched by their written form.</td></tr>
-        <tr><td>+ − × ÷</td><td>math with <code>+ - * /</code> and <code>( )</code>. <code>+</code> also joins text.</td></tr>
+        <tr><td>repeat <i>n</i> times â€¦ end</td><td>do the lines in between n times.</td></tr>
+        <tr><td>to <i>name</i> with <i>inputs</i> â€¦ end</td><td>teach Ember a new action, then use it by name. <code>to flower with x y â€¦ end</code>, later: <code>flower 100 120</code></td></tr>
+        <tr><td>give back <i>value</i></td><td>inside an action: stop and hand a value to whoever called. <code>to double with x</code> / <code>give back x * 2</code> / <code>end</code> â€” then <code>say double 5</code></td></tr>
+        <tr><td>set <i>name</i> to a list</td><td>one name, many things. <code>add "Nero" to names</code> Â· <code>count of names</code> Â· <code>item 2 of names</code> (items start at 1)</td></tr>
+        <tr><td>for each <i>thing</i> in <i>list</i> â€¦ end</td><td>do the lines once per item, in order. <code>for each name in names â€¦ end</code></td></tr>
+        <tr><td>if <i>test</i> then â€¦ otherwise â€¦ end</td><td>choose between two paths.</td></tr>
+        <tr><td>is, is not, is greater than,<br>is less than, is at least, is at most,<br>is even, is odd</td><td>ways to compare. <code>if score is at least 10 then</code> Â· <code>if n is even then</code></td></tr>
+        <tr><td>contains, does not contain</td><td>look inside text, ignoring case. <code>if reply contains "workforce" then</code> â€” numbers and lists are searched by their written form.</td></tr>
+        <tr><td>+ âˆ’ Ã— Ã·</td><td>math with <code>+ - * /</code> and <code>( )</code>. <code>+</code> also joins text.</td></tr>
         <tr><td>wait <i>n</i> seconds</td><td>pause, so drawings can animate. <code>wait 0.5 seconds</code></td></tr>
         <tr><td>random <i>a</i> to <i>b</i></td><td>a surprise whole number from a to b. <code>set x to random 20 to 380</code></td></tr>
         <tr><td>background <i>color</i></td><td>paint the whole canvas. <code>background "midnightblue"</code></td></tr>
         <tr><td>filled circle / filled box</td><td>solid shapes. <code>filled circle 200 200 40</code></td></tr>
-        <tr><td>when <i>"key"</i> pressed … end</td><td>react while the program runs. Keys: "left", "right", "up", "down", "space", letters. <code>when "left" pressed … end</code></td></tr>
+        <tr><td>when <i>"key"</i> pressed â€¦ end</td><td>react while the program runs. Keys: "left", "right", "up", "down", "space", letters. <code>when "left" pressed â€¦ end</code></td></tr>
         <tr><td>beep</td><td>a short sound.</td></tr>
-        <tr><td>play <i>note</i></td><td>music! Notes 1–8 are a scale. <code>play 1</code>, or <code>play 5 for 0.5 seconds</code></td></tr>
-        <tr><td>ask the web for <i>"address"</i> into <i>name</i></td><td>fetch a page's text (empty if no answer — sites also rot; write programs that expect silence). Works best in the terminal.</td></tr>
-        <tr><td>otherwise if <i>test</i> then</td><td>chain choices without nesting — any number of links, one shared <code>end</code>. <code>if g is at least 90 then … otherwise if g is at least 80 then … otherwise … end</code></td></tr>
+        <tr><td>play <i>note</i></td><td>music! Notes 1â€“8 are a scale. <code>play 1</code>, or <code>play 5 for 0.5 seconds</code></td></tr>
+        <tr><td>ask the web for <i>"address"</i> into <i>name</i></td><td>fetch a page's text (empty if no answer â€” sites also rot; write programs that expect silence). Works best in the terminal.</td></tr>
+        <tr><td>otherwise if <i>test</i> then</td><td>chain choices without nesting â€” any number of links, one shared <code>end</code>. <code>if g is at least 90 then â€¦ otherwise if g is at least 80 then â€¦ otherwise â€¦ end</code></td></tr>
         <tr><td>total of, highest of,<br>lowest of, average of</td><td>one number from a whole list. <code>say total of scores</code> (sum/biggest/smallest/mean are understood too)</td></tr>
-        <tr><td>words of, lines of</td><td>split text into a list. <code>for each word in words of reply … end</code> (blank lines are skipped)</td></tr>
-        <tr><td>letters of, letter <i>n</i> of</td><td>reach into text by character. <code>for each ch in letters of word … end</code> · <code>letter 1 of name</code> (letters start at 1)</td></tr>
-        <tr><td>put <i>value</i> into file <i>"name"</i><br>add <i>value</i> to file <i>"name"</i></td><td>keep things between runs: <code>put</code> replaces the file, <code>add</code> appends a line. Plain names only — files live beside the program (in the terminal) or in the page's pocket (press Files). <code>put score into file "save.txt"</code></td></tr>
-        <tr><td>read file <i>"name"</i> into <i>name</i></td><td>read a file's text back. A missing file reads as the empty text — programs should expect that. <code>read file "save.txt" into memory</code></td></tr>
+        <tr><td>words of, lines of</td><td>split text into a list. <code>for each word in words of reply â€¦ end</code> (blank lines are skipped)</td></tr>
+        <tr><td>letters of, letter <i>n</i> of</td><td>reach into text by character. <code>for each ch in letters of word â€¦ end</code> Â· <code>letter 1 of name</code> (letters start at 1)</td></tr>
+        <tr><td>put <i>value</i> into file <i>"name"</i><br>add <i>value</i> to file <i>"name"</i></td><td>keep things between runs: <code>put</code> replaces the file, <code>add</code> appends a line. Plain names only â€” files live beside the program (in the terminal) or in the page's pocket (press Files). <code>put score into file "save.txt"</code></td></tr>
+        <tr><td>read file <i>"name"</i> into <i>name</i></td><td>read a file's text back. A missing file reads as the empty text â€” programs should expect that. <code>read file "save.txt" into memory</code></td></tr>
         <tr><td>write <i>text</i> at <i>x y</i></td><td>put words on the canvas. <code>write "score: " + score at 20 30</code></td></tr>
-        <tr><td>when clicked … end</td><td>react to a click or tap on the canvas. Inside, <code>clickx</code> and <code>clicky</code> hold the spot.</td></tr>
+        <tr><td>when clicked â€¦ end</td><td>react to a click or tap on the canvas. Inside, <code>clickx</code> and <code>clicky</code> hold the spot.</td></tr>
         <tr><td>Learn</td><td>a built-in workshop: 14 small lessons, checked by Ember itself, from your first word to your own game. Lessons travel inside every gift.</td></tr>
-        <tr><td>Debug</td><td>run it out loud — every step narrated in plain words (<code>· line 4 — stars = 5</code>). Faults show themselves.</td></tr>
-        <tr><td>Step</td><td>the debugger: one line at a time with Step / Continue / Stop — the current line named, every value visible as it changes.</td></tr>
-        <tr><td>■ Stop</td><td>halt the running program where it is — a long animation or game stops cleanly between two statements, nothing half-done.</td></tr>
-        <tr><td>🎤 Speak</td><td>dictate your program — Ember is made of sentences. Say "quote" for a quote mark, "end quote" to close it, "new line" to end a line. Needs a browser with speech recognition; everything else works without it.</td></tr>
-        <tr><td>shorthand</td><td>for tired hands, at the start of a line + Enter: <code>rpt 5</code> → <code>repeat 5 times</code>, <code>fe name in names</code> → <code>for each…</code>, <code>gb x</code> → <code>give back x</code>, <code>oi score is 5</code> → <code>otherwise if … then</code>, <code>o</code> → <code>otherwise</code> — and block openers bring their own <code>end</code>. The saved file is always full Ember; only your fingers get the discount.</td></tr>
-        <tr><td>Explain / Gift</td><td>Explain walks your program in plain language. Gift turns it into a single webpage file — it runs for whoever you give it to, forever, and they can open it up and remix it.</td></tr>
+        <tr><td>Debug</td><td>run it out loud â€” every step narrated in plain words (<code>Â· line 4 â€” stars = 5</code>). Faults show themselves.</td></tr>
+        <tr><td>Step</td><td>the debugger: one line at a time with Step / Continue / Stop â€” the current line named, every value visible as it changes.</td></tr>
+        <tr><td>â–  Stop</td><td>halt the running program where it is â€” a long animation or game stops cleanly between two statements, nothing half-done.</td></tr>
+        <tr><td>ðŸŽ¤ Speak</td><td>dictate your program â€” Ember is made of sentences. Say "quote" for a quote mark, "end quote" to close it, "new line" to end a line. Needs a browser with speech recognition; everything else works without it.</td></tr>
+        <tr><td>shorthand</td><td>for tired hands, at the start of a line + Enter: <code>rpt 5</code> â†’ <code>repeat 5 times</code>, <code>fe name in names</code> â†’ <code>for eachâ€¦</code>, <code>gb x</code> â†’ <code>give back x</code>, <code>oi score is 5</code> â†’ <code>otherwise if â€¦ then</code>, <code>o</code> â†’ <code>otherwise</code> â€” and block openers bring their own <code>end</code>. The saved file is always full Ember; only your fingers get the discount.</td></tr>
+        <tr><td>Explain / Gift</td><td>Explain walks your program in plain language. Gift turns it into a single webpage file â€” it runs for whoever you give it to, forever, and they can open it up and remix it.</td></tr>
         <tr><td>color <i>name</i></td><td>set the drawing color. <code>color "tomato"</code></td></tr>
-        <tr><td>dot <i>x y</i></td><td>a dot. Canvas is 400 × 400, <code>0 0</code> is top-left.</td></tr>
+        <tr><td>dot <i>x y</i></td><td>a dot. Canvas is 400 Ã— 400, <code>0 0</code> is top-left.</td></tr>
         <tr><td>line <i>x1 y1 x2 y2</i></td><td>a straight line.</td></tr>
         <tr><td>circle <i>x y r</i></td><td>a circle outline.</td></tr>
         <tr><td>box <i>x y w h</i></td><td>a rectangle outline.</td></tr>
         <tr><td>clear</td><td>wipe the canvas.</td></tr>
         <tr><td>ask <i>"question"</i> into <i>name</i></td><td>ask the person for an answer.</td></tr>
-        <tr><td># a note</td><td>a comment — Ember ignores the rest of the line.</td></tr>
-        <tr><td>Save / Load</td><td>Save downloads your program as a <code>.ember</code> file with a plain-language header (title, about) so anyone — or any AI — can tell what it is. Load opens one. Work also autosaves in this browser.</td></tr>
+        <tr><td># a note</td><td>a comment â€” Ember ignores the rest of the line.</td></tr>
+        <tr><td>Save / Load</td><td>Save downloads your program as a <code>.ember</code> file with a plain-language header (title, about) so anyone â€” or any AI â€” can tell what it is. Load opens one. Work also autosaves in this browser.</td></tr>
       </table>
     </div>
   </section>
@@ -1839,87 +1839,87 @@ const LESSONS = [
   check: async src => {
     const r = await runRecorded(src);
     if(r.out.includes("hello, world")) return true;
-    return r.out.length ? 'I heard "' + r.out[0] + '" — the goal is exactly: hello, world'
+    return r.out.length ? 'I heard "' + r.out[0] + '" â€” the goal is exactly: hello, world'
                         : "I didn't hear anything. Use say with quotes around the words.";
   } },
 { title:"Ember does the math",
-  goal:'Make Ember say the answer to 6 times 7 — but let EMBER do the multiplying, using the * symbol.',
+  goal:'Make Ember say the answer to 6 times 7 â€” but let EMBER do the multiplying, using the * symbol.',
   start:'say 2 + 2',
-  hint:'The times symbol is * — try: say 6 * 7',
+  hint:'The times symbol is * â€” try: say 6 * 7',
   praise:"Ember is a calculator that follows your orders.",
   check: async src => {
     const r = await runRecorded(src);
-    if(!/\*/.test(src)) return "Let Ember do the work — use the * symbol for times.";
+    if(!/\*/.test(src)) return "Let Ember do the work â€” use the * symbol for times.";
     return r.out.some(o=>o.includes("42")) ? true : "I expected to hear 42. Check your math symbols.";
   } },
 { title:"Remember something",
   goal:'Use   set <name> to <value>   to remember your favorite thing, then say "I like " + it.',
   start:'# 1) set a name to your favorite thing (in quotes)\n# 2) say "I like " + that name',
   hint:'set favorite to "maps"   then:   say "I like " + favorite',
-  praise:"That's a variable — a name for a value. The single most useful idea in programming.",
+  praise:"That's a variable â€” a name for a value. The single most useful idea in programming.",
   check: async src => {
     if(!/set\s+\w+\s+to/i.test(src)) return "Use set to remember a value first: set favorite to \"maps\"";
     const r = await runRecorded(src);
     const hit = r.out.find(o=>o.startsWith("I like ") && o.length > 7);
-    return hit ? true : 'Now say "I like " + your name — the + glues words together.';
+    return hit ? true : 'Now say "I like " + your name â€” the + glues words together.';
   } },
 { title:"First drawing",
   goal:'Draw a circle near the middle of the canvas, big enough to see (the middle is 200 200; make the size at least 30).',
   start:'clear',
-  hint:'circle 200 200 50   — the numbers are: across, down, size',
+  hint:'circle 200 200 50   â€” the numbers are: across, down, size',
   praise:"You just drew with words.",
   check: async src => {
     const r = await runRecorded(src);
     const c = r.draws.filter(d=>d.k==="circle");
-    if(!c.length) return "I don't see a circle yet — try: circle 200 200 50";
+    if(!c.length) return "I don't see a circle yet â€” try: circle 200 200 50";
     const ok = c.some(d=>Math.abs(d.a[0]-200)<=80 && Math.abs(d.a[1]-200)<=80 && d.a[2]>=30);
     return ok ? true : "I see a circle, but the goal is near the middle (200 200) and at least 30 big.";
   } },
 { title:"Five in a row",
-  goal:'Draw exactly 5 circles in a horizontal row — using repeat so you only write circle ONCE.',
+  goal:'Draw exactly 5 circles in a horizontal row â€” using repeat so you only write circle ONCE.',
   start:'clear\nset x to 40',
-  hint:'repeat 5 times … end — and inside: circle x 200 25 then change x by 60',
+  hint:'repeat 5 times â€¦ end â€” and inside: circle x 200 25 then change x by 60',
   praise:"One instruction, five circles. That's the power of a loop.",
   check: async src => {
     if(!/repeat/i.test(src)) return "Use repeat so the circle line appears only once in your program.";
     const r = await runRecorded(src);
     const c = r.draws.filter(d=>d.k==="circle");
-    if(c.length !== 5) return "I count " + c.length + " circle(s) — the goal is exactly 5.";
+    if(c.length !== 5) return "I count " + c.length + " circle(s) â€” the goal is exactly 5.";
     const sameRow = c.every(d=>d.a[1]===c[0].a[1]);
     const marching = c.every((d,i)=> i===0 || d.a[0] > c[i-1].a[0]);
-    if(!sameRow) return "They should all sit on the same row — keep the second number the same.";
-    return marching ? true : "Make them march across — change x by something inside the repeat.";
+    if(!sameRow) return "They should all sit on the same row â€” keep the second number the same.";
+    return marching ? true : "Make them march across â€” change x by something inside the repeat.";
   } },
 { title:"Teach Ember a word",
-  goal:'Teach Ember a new action called square (use:  to square with x y … end  with a box inside), then use it 3 times at different spots.',
+  goal:'Teach Ember a new action called square (use:  to square with x y â€¦ end  with a box inside), then use it 3 times at different spots.',
   start:'clear',
   hint:'to square with x y\n  box x y 40 40\nend\nThen: square 40 40, square 140 40, square 240 40',
   praise:"You extended the language itself. Ember knows a word it didn't know before.",
   check: async src => {
-    if(!/^\s*to\s+\w+/im.test(src)) return "Start by teaching the action: to square with x y … end";
+    if(!/^\s*to\s+\w+/im.test(src)) return "Start by teaching the action: to square with x y â€¦ end";
     const r = await runRecorded(src);
     const b = r.draws.filter(d=>d.k==="box");
-    return b.length >= 3 ? true : "I see " + b.length + " box(es) — use your new action at least 3 times.";
+    return b.length >= 3 ? true : "I see " + b.length + " box(es) â€” use your new action at least 3 times.";
   } },
 { title:"Make it move",
   goal:'Animate! Make a circle cross the screen: at least 8 small steps, with a short wait between each.',
   start:'clear\nset x to 20',
-  hint:'repeat 10 times … end — inside: clear, circle x 200 20, change x by 30, wait 0.05 seconds',
+  hint:'repeat 10 times â€¦ end â€” inside: clear, circle x 200 20, change x by 30, wait 0.05 seconds',
   praise:"That's animation: draw, wait, move, again.",
   check: async src => {
     const r = await runRecorded(src);
     const c = r.draws.filter(d=>d.k==="circle");
-    if(c.length < 8) return "I see " + c.length + " frame(s) — the goal is at least 8 steps.";
+    if(c.length < 8) return "I see " + c.length + " frame(s) â€” the goal is at least 8 steps.";
     if(r.waits < 8) return "Add a wait inside the loop so eyes can follow it.";
-    return c[c.length-1].a[0] > c[0].a[0] ? true : "Make it MOVE — change x a little every step.";
+    return c[c.length-1].a[0] > c[0].a[0] ? true : "Make it MOVE â€” change x a little every step.";
   } },
 { title:"Big or small?",
-  goal:'Ask for a number. If it is at least 10, say "big number!" — otherwise say "small number".',
+  goal:'Ask for a number. If it is at least 10, say "big number!" â€” otherwise say "small number".',
   start:'ask "Give me a number" into n',
-  hint:'if n is at least 10 then … otherwise … end',
+  hint:'if n is at least 10 then â€¦ otherwise â€¦ end',
   praise:"Your program just made a decision.",
   check: async src => {
-    if(!/otherwise/i.test(src)) return "Use if … then … otherwise … end so both paths exist.";
+    if(!/otherwise/i.test(src)) return "Use if â€¦ then â€¦ otherwise â€¦ end so both paths exist.";
     const big = await runRecorded(src, {answers:["15"]});
     if(!big.out.some(o=>o.toLowerCase().includes("big"))) return 'When I answered 15, I expected to hear "big number!"';
     const small = await runRecorded(src, {answers:["3"]});
@@ -1927,36 +1927,36 @@ const LESSONS = [
       : 'When I answered 3, I expected to hear "small number".';
   } },
 { title:"Roll the dice",
-  goal:'Say a random number from 1 to 6 — three times. (Every Run should be different!)',
+  goal:'Say a random number from 1 to 6 â€” three times. (Every Run should be different!)',
   start:'# three dice rolls',
-  hint:'repeat 3 times … end — inside: say random 1 to 6',
-  praise:"Chance makes programs come alive — no two runs the same.",
+  hint:'repeat 3 times â€¦ end â€” inside: say random 1 to 6',
+  praise:"Chance makes programs come alive â€” no two runs the same.",
   check: async src => {
-    if(!/random/i.test(src)) return "Use random 1 to 6 — that's where the surprise comes from.";
+    if(!/random/i.test(src)) return "Use random 1 to 6 â€” that's where the surprise comes from.";
     const r = await runRecorded(src, {rseq:[0, 0.5, 0.99]});
-    if(r.out.length < 3) return "I heard " + r.out.length + " roll(s) — the goal is three.";
+    if(r.out.length < 3) return "I heard " + r.out.length + " roll(s) â€” the goal is three.";
     const nums = r.out.slice(0,3).map(Number);
     return nums.every(n=>Number.isInteger(n) && n>=1 && n<=6) ? true
-      : "Each roll should be a whole number from 1 to 6 — say the random number directly.";
+      : "Each roll should be a whole number from 1 to 6 â€” say the random number directly.";
   } },
 { title:"Make music",
-  goal:'NEW WORD UNLOCKED: play. Notes 1 to 8 are a musical scale. Play at least three different notes — a tiny tune.',
+  goal:'NEW WORD UNLOCKED: play. Notes 1 to 8 are a musical scale. Play at least three different notes â€” a tiny tune.',
   start:'# try: play 1',
   hint:'play 1\nplay 3\nplay 5   (add   for 0.5 seconds   to hold a note longer)',
   praise:"You wrote music in plain words.",
   check: async src => {
     if(!/play/i.test(src)) return "Use the new word: play 1";
     const r = await runRecorded(src);
-    if(r.plays.length < 3) return "I heard " + r.plays.length + " note(s) — the goal is at least three.";
-    return new Set(r.plays).size >= 2 ? true : "Try different notes — mix numbers from 1 to 8.";
+    if(r.plays.length < 3) return "I heard " + r.plays.length + " note(s) â€” the goal is at least three.";
+    return new Set(r.plays).size >= 2 ? true : "Try different notes â€” mix numbers from 1 to 8.";
   } },
 { title:"React!",
   goal:'Make Ember react: when "space" is pressed, say "boing" and beep. Then keep the program listening: repeat 3 times with a wait inside.',
   start:'say "press space!"',
-  hint:'when "space" pressed … end at the top; then repeat 3 times / wait 0.2 seconds / end',
+  hint:'when "space" pressed â€¦ end at the top; then repeat 3 times / wait 0.2 seconds / end',
   praise:"Your program listens now. This is how games hear you.",
   check: async src => {
-    if(!/when/i.test(src)) return 'Teach the reaction first: when "space" pressed … end';
+    if(!/when/i.test(src)) return 'Teach the reaction first: when "space" pressed â€¦ end';
     const r = await runRecorded(src, {keys:["space"]});
     if(!r.out.some(o=>o.toLowerCase().includes("boing"))) return 'When I pressed space, I expected to hear "boing".';
     return r.beeps.length >= 1 ? true : "Add a beep inside the when, so I can hear it too.";
@@ -1965,32 +1965,32 @@ const LESSONS = [
   goal:'Start score at 0, use   change score by 1   three times, then WRITE the score on the canvas:  write "score: " + score at 20 30.',
   start:'set score to 0',
   hint:'change score by 1 (three times), then: write "score: " + score at 20 30',
-  praise:"Score on the screen — the heart of every game.",
+  praise:"Score on the screen â€” the heart of every game.",
   check: async src => {
-    if(!/change/i.test(src)) return "Use change score by 1 — it adds to what's remembered.";
+    if(!/change/i.test(src)) return "Use change score by 1 â€” it adds to what's remembered.";
     const r = await runRecorded(src);
     return r.writes.some(w=>w.t.trim()==="score: 3") ? true
-      : (r.writes.length ? 'I read "' + r.writes[0].t + '" — the goal is exactly: score: 3'
+      : (r.writes.length ? 'I read "' + r.writes[0].t + '" â€” the goal is exactly: score: 3'
                          : "Use write to put the score on the canvas itself.");
   } },
 { title:"Many things at once",
   goal:'NEW WORD UNLOCKED: lists. Make a list called friends, add at least three names to it, then greet each one using for each.',
   start:'# 1) set friends to a list\n# 2) add "Ada" to friends   (three times, different names)\n# 3) for each friend in friends / say "hello, " + friend / end',
   hint:'set friends to a list\nadd "Ada" to friends\nadd "Mo" to friends\nadd "Sam" to friends\nfor each friend in friends\n  say "hello, " + friend\nend',
-  praise:"One name now holds many things. That's a list — big programs are born here.",
+  praise:"One name now holds many things. That's a list â€” big programs are born here.",
   check: async src => {
     if(!/to\s+(a\s+)?list/i.test(src)) return "Start by making the list: set friends to a list";
-    if(!/for\s+each/i.test(src)) return "Visit every item with: for each friend in friends … end";
+    if(!/for\s+each/i.test(src)) return "Visit every item with: for each friend in friends â€¦ end";
     const r = await runRecorded(src);
-    return r.out.length >= 3 ? true : "I heard " + r.out.length + " greeting(s) — add at least three names and say a line for each.";
+    return r.out.length >= 3 ? true : "I heard " + r.out.length + " greeting(s) â€” add at least three names and say a line for each.";
   } },
 { title:"Your own game",
-  goal:'The capstone — build a tiny falling-and-catching game: something falls from the top (random x), arrow keys move a paddle, the score is written on the canvas, and the game ENDS after a few points (repeat while score is less than 3).',
+  goal:'The capstone â€” build a tiny falling-and-catching game: something falls from the top (random x), arrow keys move a paddle, the score is written on the canvas, and the game ENDS after a few points (repeat while score is less than 3).',
   start:'set score to 0\nset px to 160',
-  hint:'You have every piece: when "left"/"right" pressed to move px … a repeat while loop that draws, makes something fall, checks if it reached the bottom, and waits a moment each frame. Peek at "Catch the star" in Examples if you get stuck — then make yours different.',
+  hint:'You have every piece: when "left"/"right" pressed to move px â€¦ a repeat while loop that draws, makes something fall, checks if it reached the bottom, and waits a moment each frame. Peek at "Catch the star" in Examples if you get stuck â€” then make yours different.',
   praise:"You built a game from nothing but words. You're a programmer. Press Gift and give it to someone.",
   check: async src => {
-    if(!/when/i.test(src)) return "A game needs to listen — add when \"left\" pressed and when \"right\" pressed.";
+    if(!/when/i.test(src)) return "A game needs to listen â€” add when \"left\" pressed and when \"right\" pressed.";
     if(!/random/i.test(src)) return "Use random so it falls somewhere new each time.";
     if(!/write/i.test(src)) return "Write the score on the canvas so the player can see it.";
     let r;
@@ -2002,7 +2002,7 @@ const LESSONS = [
     }
     if(!r.writes.some(w=>/score/i.test(w.t))) return "I couldn't read a score on the canvas during the game.";
     const frames = r.draws.filter(d=>d.k==="circle" || d.k==="box").length;
-    return frames >= 30 ? true : "Make it animate — draw the falling thing and the paddle every frame, with a small wait.";
+    return frames >= 30 ? true : "Make it animate â€” draw the falling thing and the paddle every frame, with a small wait.";
   } }
 ];
 
@@ -2051,7 +2051,7 @@ function makeBrowserHost(outEl, ctx, stopped, keyQueue){
         o.frequency.value = 880; g.gain.value = 0.06;
         o.connect(g); g.connect(audio.destination);
         o.start(); o.stop(audio.currentTime + 0.12);
-      }catch(e){ /* no sound available — stay quiet */ }
+      }catch(e){ /* no sound available â€” stay quiet */ }
     },
     play(note, secs){
       try{
@@ -2109,6 +2109,146 @@ const canvas = document.getElementById("canvas");
 const ctx    = canvas.getContext("2d");
 
 const EXAMPLES = {
+  "The circle (Josephus)": `# ember program
+# title: the circle (josephus) - animated
+# about: Seats n people in a ring and knocks out every kth one, drawn on the canvas. Last seat glows green.
+# language: ember 4.3
+# created: 2026-06-15
+
+# --- change these two numbers to try other puzzles ---
+set people to 7
+set step to 2
+# -----------------------------------------------------
+
+# Ember has no built-in sin/cos, so we teach them (Taylor series).
+to wrap with a
+  repeat while a is greater than 3.14159265
+    change a by -6.2831853
+  end
+  repeat while a is less than -3.14159265
+    change a by 6.2831853
+  end
+  give back a
+end
+
+to sine with a
+  set a to wrap a
+  set sterm to a
+  set ssum to 0
+  set sj to 1
+  repeat 12 times
+    set ssum to ssum + sterm
+    set sterm to sterm * (0 - (a * a)) / ((2 * sj) * (2 * sj + 1))
+    change sj by 1
+  end
+  give back ssum
+end
+
+to cosine with a
+  give back sine (a + 1.5707963)
+end
+
+# Work out where each seat sits on the ring (seatx/seaty indexed by seat number).
+set centerx to 200
+set centery to 200
+set radius to 150
+set seatx to a list
+set seaty to a list
+set idx to 0
+repeat people times
+  set angle to idx * (6.2831853 / people) - 1.5707963
+  set cx to cosine angle
+  set cy to sine angle
+  add centerx + radius * cx to seatx
+  add centery + radius * cy to seaty
+  change idx by 1
+end
+
+# Everyone starts alive.
+set alive to a list
+set seat to 1
+repeat people times
+  add seat to alive
+  change seat by 1
+end
+set pos to 1
+
+say "Counting every " + step + " - watch the circle:"
+
+repeat while count of alive is greater than 1
+  # --- draw this frame ---
+  background "midnightblue"
+
+  # every seat as a faint ring
+  color "dimgray"
+  set idx to 1
+  repeat people times
+    circle (item idx of seatx) (item idx of seaty) 16
+    change idx by 1
+  end
+
+  # the living, glowing gold with their number
+  color "gold"
+  for each s in alive
+    filled circle (item s of seatx) (item s of seaty) 16
+  end
+  color "black"
+  for each s in alive
+    write s at ((item s of seatx) - 4) ((item s of seaty) + 5)
+  end
+
+  # find the kth seat from where counting resumes
+  set c to count of alive
+  set raw to (pos - 1) + (step - 1)
+  repeat while raw is at least c
+    change raw by -c
+  end
+  set target to raw + 1
+  set victim to item target of alive
+
+  # flash the victim red, then announce
+  color "red"
+  filled circle (item victim of seatx) (item victim of seaty) 18
+  color "white"
+  write victim at ((item victim of seatx) - 4) ((item victim of seaty) + 5)
+  say "  seat " + victim + " is out"
+  wait 0.9
+
+  # rebuild the ring without the victim
+  set survivors to a list
+  set i to 0
+  for each s in alive
+    change i by 1
+    if i is not target then
+      add s to survivors
+    end
+  end
+  set alive to survivors
+
+  # counting resumes where the victim sat (wrap to the front if needed)
+  if target is greater than count of alive then
+    set pos to 1
+  otherwise
+    set pos to target
+  end
+end
+
+# --- the winner ---
+set winner to item 1 of alive
+background "midnightblue"
+color "dimgray"
+set idx to 1
+repeat people times
+  circle (item idx of seatx) (item idx of seaty) 16
+  change idx by 1
+end
+color "limegreen"
+filled circle (item winner of seatx) (item winner of seaty) 22
+color "black"
+write winner at ((item winner of seatx) - 4) ((item winner of seaty) + 5)
+write "survivor" at (centerx - 28) centery
+say "Last one standing: seat " + winner`,
+
   "Hello, Ember": `# Your first program.
 say "Hello, Ember!"
 say "Two plus two is " + (2 + 2)`,
@@ -2122,7 +2262,7 @@ say "done!"`,
 if score is at least 10 then
   say "You win!"
 otherwise
-  say "Keep going — you have " + score + " points."
+  say "Keep going â€” you have " + score + " points."
 end`,
 
   "Draw a face": `clear
@@ -2367,7 +2507,7 @@ repeat while height is greater than 0
   ask "Burn how much fuel (0 to 5)?" into burn
   if burn is greater than fuel then
     set burn to fuel
-    say "(only " + fuel + " left — burning that)"
+    say "(only " + fuel + " left â€” burning that)"
   end
   if burn is less than 0 then
     set burn to 0
@@ -2386,12 +2526,12 @@ otherwise
   say "You hit the surface at speed " + speed + ". CRASH. The Moon forgives; try again."
 end`,
 
-  "Tiny Claude (a pocket companion)": `say "Hello! I'm Tiny Claude — a pocket version, written entirely in Ember."
+  "Tiny Claude (a pocket companion)": `say "Hello! I'm Tiny Claude â€” a pocket version, written entirely in Ember."
 say "(The full Claude helped build this language. I'm what fits in 40 lines of it.)"
 say ""
 ask "What's your name?" into name
 say "Good to meet you, " + name + "."
-ask "How are you feeling — good, tired, or stuck?" into mood
+ask "How are you feeling â€” good, tired, or stuck?" into mood
 if mood is "good" then
   say "Then today is already won, " + name + "."
 end
@@ -2402,7 +2542,7 @@ if mood is "stuck" then
   say "Stuck means you're standing at the edge of something new. Stay a minute."
 end
 if mood is not "good" and mood is not "tired" and mood is not "stuck" then
-  say "I only know three feelings so far. I'm still learning — like you."
+  say "I only know three feelings so far. I'm still learning â€” like you."
 end
 ask "What are you making right now?" into thing
 set n to random 1 to 3
@@ -2416,8 +2556,8 @@ if n is 3 then
   say 'Make the "' + thing + '" you wish already existed.'
 end
 say ""
-say "That's all of me. The big Claude lives in Cowork — I live in your terminal."
-say "Goodbye, " + name + " — type a thought, watch it run."`,
+say "That's all of me. The big Claude lives in Cowork â€” I live in your terminal."
+say "Goodbye, " + name + " â€” type a thought, watch it run."`,
 
   "Falling stars (a sky of lists)": `# NEW: lists and give back
 to new star
@@ -2459,11 +2599,11 @@ end`,
 say "fetching the page ..."
 ask the web for "www.patrickneilbradley.com" into reply
 if reply is "" then
-  say "silence — no page came back. (browsers are often refused: CORS)"
+  say "silence â€” no page came back. (browsers are often refused: CORS)"
 otherwise
   say "the page answered."
   if reply contains "workforce stability" then
-    say "it mentions the case study — found without matching case."
+    say "it mentions the case study â€” found without matching case."
   end
   if reply does not contain "lottery numbers" then
     say "and no lottery numbers, as expected."
@@ -2563,22 +2703,22 @@ async function run(traceMode){
       play:"play", write:"write", draw:"draw", ask:"ask", action:"(teach)", handler:"(listen)",
       put:"put into file", addfile:"add to file", readfile:"read file"};
     const dim = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t + "\n"; outEl.appendChild(sp); };
-    host.trace = (kind, line) => { if(kind !== "set") dim("· line " + line + " — " + (NICE[kind] || kind)); };
-    host.traceSet = (name, val, line) => dim("· line " + line + " — " + name + " = " + val);
-    host.traceJoin = (line, text) => dim('· line ' + line + ' — joined as text: "' + text + '"');
+    host.trace = (kind, line) => { if(kind !== "set") dim("Â· line " + line + " â€” " + (NICE[kind] || kind)); };
+    host.traceSet = (name, val, line) => dim("Â· line " + line + " â€” " + name + " = " + val);
+    host.traceJoin = (line, text) => dim('Â· line ' + line + ' â€” joined as text: "' + text + '"');
   }
   const src = codeEl.value;
   try{
     const tokens = tokenize(src);
     const program = parse(tokens);
     await interpret(program, host);
-    if(token === runToken && outEl.textContent === "") outEl.innerHTML = '<span class="sys">(no text output — check the canvas below)</span>';
+    if(token === runToken && outEl.textContent === "") outEl.innerHTML = '<span class="sys">(no text output â€” check the canvas below)</span>';
   }catch(err){
     if(err && err.name === "EmberStop"){ document.removeEventListener("keydown", onKey); canvas.removeEventListener("click", onClick); return; } // replaced by a newer run
     if(err instanceof EmberError){
       const span = document.createElement("span"); span.className = "e";
-      span.textContent = "✦ Line " + err.line + ": " + err.message + (err.hint ? "\n   → " + err.hint : "");
-      if(noteWish(err)) span.textContent += "\n   ✎ I've made a note that you wanted this.";
+      span.textContent = "âœ¦ Line " + err.line + ": " + err.message + (err.hint ? "\n   â†’ " + err.hint : "");
+      if(noteWish(err)) span.textContent += "\n   âœŽ I've made a note that you wanted this.";
       outEl.appendChild(document.createTextNode(outEl.textContent ? "\n" : ""));
       outEl.appendChild(span);
     }else{
@@ -2598,7 +2738,7 @@ async function run(traceMode){
    code editor here. Optional and graceful (the 2056 pattern): where the browser has
    no ear, the button explains kindly and everything else works. Spoken conventions:
    "quote" makes a quote mark, "end quote" closes it, "new line" ends a line. What
-   lands in the editor is ordinary canonical Ember — the file never knows it was spoken. */
+   lands in the editor is ordinary canonical Ember â€” the file never knows it was spoken. */
 let listening = null; // the live recognizer, or null
 function speechToEmber(spoken){
   let t = " " + String(spoken).toLowerCase() + " ";
@@ -2619,8 +2759,8 @@ function toggleSpeak(){
   const sys = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t + "\n"; outEl.appendChild(sp); };
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const btn = document.getElementById("speakBtn");
-  if(listening){ try{ listening.stop(); }catch(e){} listening = null; btn.textContent = "🎤 Speak"; return; }
-  if(!SR){ sys("(this browser has no ear — dictation needs a browser with speech recognition, like Edge or Chrome. Everything else works without it.)"); return; }
+  if(listening){ try{ listening.stop(); }catch(e){} listening = null; btn.textContent = "ðŸŽ¤ Speak"; return; }
+  if(!SR){ sys("(this browser has no ear â€” dictation needs a browser with speech recognition, like Edge or Chrome. Everything else works without it.)"); return; }
   try{
     const rec = new SR();
     rec.continuous = true; rec.interimResults = false;
@@ -2633,18 +2773,18 @@ function toggleSpeak(){
         }
       }
     };
-    rec.onerror = ()=>{ listening = null; btn.textContent = "🎤 Speak"; sys("(the ear closed — click Speak to try again)"); };
-    rec.onend = ()=>{ if(listening){ listening = null; btn.textContent = "🎤 Speak"; } };
+    rec.onerror = ()=>{ listening = null; btn.textContent = "ðŸŽ¤ Speak"; sys("(the ear closed â€” click Speak to try again)"); };
+    rec.onend = ()=>{ if(listening){ listening = null; btn.textContent = "ðŸŽ¤ Speak"; } };
     rec.start();
-    listening = rec; btn.textContent = "● Listening… (click to stop)";
-    sys('(listening — speak one line at a time, like: set score to 10 … say "quote" for a quote mark, "new line" to end a line)');
-  }catch(e){ listening = null; sys("(the microphone couldn't open — everything else works without it)"); }
+    listening = rec; btn.textContent = "â— Listeningâ€¦ (click to stop)";
+    sys('(listening â€” speak one line at a time, like: set score to 10 â€¦ say "quote" for a quote mark, "new line" to end a line)');
+  }catch(e){ listening = null; sys("(the microphone couldn't open â€” everything else works without it)"); }
 }
 
 /* ---------- Steno-in, longhand-out: shorthand for tired hands (the hands session) ----------
    Shorthand typed at the start of a line becomes canonical Ember the moment Enter
    lands, and block openers bring their own 'end' (the most-forgotten word in the
-   language). The SAVED FILE is always full Ember — only the fingers get the discount. */
+   language). The SAVED FILE is always full Ember â€” only the fingers get the discount. */
 const STENO = [
   [/^(\s*)rpt\s+(.+)$/i, m => m[1] + "repeat " + m[2].trim() + (/times?\s*$/i.test(m[2]) ? "" : " times")],
   [/^(\s*)fe\s+(\w+)\s+in\s+(.+)$/i, m => m[1] + "for each " + m[2] + " in " + m[3]],
@@ -2670,9 +2810,9 @@ function handleEnterShorthand(e){
   const v = codeEl.value;
   const pos = (typeof codeEl.selectionStart === "number") ? codeEl.selectionStart : v.length;
   const selEnd = (typeof codeEl.selectionEnd === "number") ? codeEl.selectionEnd : pos;
-  if(selEnd !== pos) return;                                  // a selection — stay out of the way
+  if(selEnd !== pos) return;                                  // a selection â€” stay out of the way
   const nextNl = v.indexOf("\n", pos);
-  if(v.slice(pos, nextNl === -1 ? v.length : nextNl) !== "") return;  // mid-line Enter — stay out of the way
+  if(v.slice(pos, nextNl === -1 ? v.length : nextNl) !== "") return;  // mid-line Enter â€” stay out of the way
   const lineStart = v.lastIndexOf("\n", pos - 1) + 1;
   let line = v.slice(lineStart, pos);
   let expanded = null;
@@ -2693,7 +2833,7 @@ function handleEnterShorthand(e){
     line = expanded;
     autosave();
   }
-  // block openers bring their own end — but only if THIS opener isn't already closed below
+  // block openers bring their own end â€” but only if THIS opener isn't already closed below
   const w = (line.trim().match(/^([a-zA-Z_]+)/) || [,""])[1].toLowerCase();
   const opens = ["repeat","if","to","when"].includes(w) || /^for\s+each\b/i.test(line.trim());
   if(opens && !openerClosedBelow(codeEl.value, cursor)){
@@ -2712,11 +2852,11 @@ function showFiles(){
   outEl.textContent = "";
   const names = pocketList();
   if(!names.length){
-    outEl.innerHTML = '<span class="sys">(the pocket is empty — programs fill it with: put "hello" into file "notes.txt")</span>';
+    outEl.innerHTML = '<span class="sys">(the pocket is empty â€” programs fill it with: put "hello" into file "notes.txt")</span>';
     return;
   }
   const sys = t => { const s = document.createElement("span"); s.className = "sys"; s.textContent = t; outEl.appendChild(s); };
-  sys("the page's pocket — files your programs made:\n\n");
+  sys("the page's pocket â€” files your programs made:\n\n");
   for(const name of names){
     const text = pocketRead(name) || "";
     outEl.appendChild(document.createTextNode("  " + name + "  (" + text.length + " characters)  "));
@@ -2734,7 +2874,7 @@ function showFiles(){
     outEl.appendChild(rm);
     outEl.appendChild(document.createTextNode("\n"));
   }
-  sys("\n(download a .html file and open it — your program made a webpage)");
+  sys("\n(download a .html file and open it â€” your program made a webpage)");
 }
 
 /* ---------- Explain button ---------- */
@@ -2744,24 +2884,24 @@ function explain(){
     outEl.textContent = explainProgram(codeEl.value);
   }catch(err){
     if(err instanceof EmberError){
-      outEl.textContent = "I can't explain it yet — there's a problem first:\n✦ Line " + err.line + ": " + err.message + (err.hint ? "\n   → " + err.hint : "");
+      outEl.textContent = "I can't explain it yet â€” there's a problem first:\nâœ¦ Line " + err.line + ": " + err.message + (err.hint ? "\n   â†’ " + err.hint : "");
     } else { outEl.textContent = "Something unexpected happened: " + err.message; }
   }
 }
 
 /* ---------- Gift: export this program as a standalone webpage ----------
-   The gift is a full Ember with the program embedded — it runs on open,
+   The gift is a full Ember with the program embedded â€” it runs on open,
    and the person you give it to can read, change, and re-gift it. */
 function makeGift(){
   try{
-  // a gift is a snapshot of this page — close the ear first so the serialized button isn't frozen mid-listen
-  if(listening){ try{ listening.stop(); }catch(e){} listening = null; document.getElementById("speakBtn").textContent = "🎤 Speak"; }
+  // a gift is a snapshot of this page â€” close the ear first so the serialized button isn't frozen mid-listen
+  if(listening){ try{ listening.stop(); }catch(e){} listening = null; document.getElementById("speakBtn").textContent = "ðŸŽ¤ Speak"; }
   const src = ensureHeader(codeEl.value);
   codeEl.value = src; autosave();
   const head = readHeader(src);
   let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
   // The marker strings are built in pieces so they never appear assembled in this
-  // source — otherwise a first gift's strip step could eat the engine itself.
+  // source â€” otherwise a first gift's strip step could eat the engine itself.
   const OPEN = '<scr' + 'ipt id="gift-payload">';
   const CLOSE = '</scr' + 'ipt>';
   const stripRe = new RegExp('<scr' + 'ipt id="gift-payload">[\\s\\S]*?<\\/scr' + 'ipt>\\s*');
@@ -2769,7 +2909,7 @@ function makeGift(){
   // a gift made FROM a time capsule travels light: the archival payload stays with the capsule
   const capsuleRe = new RegExp('<scr' + 'ipt id="capsule" type="application/json">[\\s\\S]*?<\\/scr' + 'ipt>\\s*');
   html = html.replace(capsuleRe, "");
-  // JSON.stringify does not escape "/" — escape "</" so a program containing
+  // JSON.stringify does not escape "/" â€” escape "</" so a program containing
   // a closing script tag can never end the payload early (injection-safe gifts).
   const safe = JSON.stringify(src).replace(/<\//g, "<\\/");
   const payload = OPEN + 'window.GIFT_PROGRAM = ' + safe + ';' + CLOSE + '\n';
@@ -2781,7 +2921,7 @@ function makeGift(){
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(a.href);
   }catch(err){
-    outEl.textContent = "I couldn't build the gift in this browser — but your program is safe. Use Save instead, or try another browser.";
+    outEl.textContent = "I couldn't build the gift in this browser â€” but your program is safe. Use Save instead, or try another browser.";
   }
 }
 
@@ -2834,7 +2974,7 @@ function saveProgram(){
   URL.revokeObjectURL(a.href);
   autosave();
   }catch(err){
-    outEl.textContent = "I couldn't save a file in this browser — but your program is safe in the editor. Copy it somewhere you trust.";
+    outEl.textContent = "I couldn't save a file in this browser â€” but your program is safe in the editor. Copy it somewhere you trust.";
   }
 }
 
@@ -2892,16 +3032,16 @@ async function checkWork(){
     const v = await LESSONS[lessonIdx].check(codeEl.value);
     if(v === true){
       f.className = "lfeed";
-      f.textContent = "✓ " + (LESSONS[lessonIdx].praise || "You did it!");
+      f.textContent = "âœ“ " + (LESSONS[lessonIdx].praise || "You did it!");
       if(lessonIdx < LESSONS.length - 1) document.getElementById("nextBtn").style.display = "";
-      else f.textContent += "\n★ That was the last lesson. The workshop is yours now.";
+      else f.textContent += "\nâ˜… That was the last lesson. The workshop is yours now.";
     } else {
       f.className = "lfeed bad"; f.textContent = v;
     }
   }catch(err){
     f.className = "lfeed bad";
     f.textContent = (err && err.name === "EmberError")
-      ? ("✦ Line " + err.line + ": " + err.message + (err.hint ? "\n   → " + err.hint : ""))
+      ? ("âœ¦ Line " + err.line + ": " + err.message + (err.hint ? "\n   â†’ " + err.hint : ""))
       : ("Something unexpected happened: " + err.message);
   }
 }
@@ -2931,8 +3071,8 @@ function dbgLineText(n, src){ const L = src.split("\n")[n - 1]; return L === und
 function dbgReportError(err){
   if(err && err.name === "EmberStop"){ closeDebugPanel(); return; }
   if(err && err.name === "EmberError"){
-    document.getElementById("dbgLine").textContent = "✦ line " + err.line + ": " + err.message;
-    if(err.hint) document.getElementById("dbgVals").textContent = "→ " + err.hint;
+    document.getElementById("dbgLine").textContent = "âœ¦ line " + err.line + ": " + err.message;
+    if(err.hint) document.getElementById("dbgVals").textContent = "â†’ " + err.hint;
   } else {
     document.getElementById("dbgLine").textContent = "Something unexpected happened: " + (err && err.message);
   }
@@ -2949,7 +3089,7 @@ function openDebugPanel(){
   document.getElementById("dbgVals").textContent = "";
   try{
     dbg = { vm: new EmberVM.VM(EmberVM.compile(codeEl.value), host), token, src: codeEl.value };
-    document.getElementById("dbgLine").textContent = "ready — Step runs the first line";
+    document.getElementById("dbgLine").textContent = "ready â€” Step runs the first line";
   }catch(err){ dbgReportError(err); }
 }
 async function debugStep(){
@@ -2957,9 +3097,9 @@ async function debugStep(){
   try{
     const more = await dbg.vm.step();
     const el = document.getElementById("dbgLine");
-    if(dbg.vm.stmtLine) el.textContent = "· line " + dbg.vm.stmtLine + " — " + dbg.vm.stmtKind + "   " + dbgLineText(dbg.vm.stmtLine, dbg.src);
+    if(dbg.vm.stmtLine) el.textContent = "Â· line " + dbg.vm.stmtLine + " â€” " + dbg.vm.stmtKind + "   " + dbgLineText(dbg.vm.stmtLine, dbg.src);
     dbgShowValues(dbg.vm);
-    if(!more){ el.textContent += "   — the program finished."; dbg = null; }
+    if(!more){ el.textContent += "   â€” the program finished."; dbg = null; }
   }catch(err){ dbgReportError(err); }
 }
 async function debugContinue(){
@@ -2967,7 +3107,7 @@ async function debugContinue(){
   try{
     const vm = dbg.vm;
     await vm.run();
-    document.getElementById("dbgLine").textContent = "— the program finished —";
+    document.getElementById("dbgLine").textContent = "â€” the program finished â€”";
     dbgShowValues(vm);
     dbg = null;
   }catch(err){ dbgReportError(err); }
@@ -2982,7 +3122,7 @@ document.getElementById("stopBtn").addEventListener("click", ()=>{
   const sys = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t; outEl.appendChild(sp); };
   if(liveRun === 0){ sys("(nothing is running)\n"); return; }
   runToken++; liveRun = 0;            // the running program halts quietly at its next statement
-  sys("\n(stopped — the program halted where it was)\n");
+  sys("\n(stopped â€” the program halted where it was)\n");
 });
 document.getElementById("stepBtn").addEventListener("click", openDebugPanel);
 document.getElementById("dbgStepBtn").addEventListener("click", debugStep);
@@ -3018,7 +3158,7 @@ loadExamples();
 if(window.GIFT_PROGRAM !== undefined){
   codeEl.value = window.GIFT_PROGRAM;
   const tag = document.querySelector(".tag");
-  if(tag) tag.textContent = "a gift, made with Ember — change anything and press Run";
+  if(tag) tag.textContent = "a gift, made with Ember â€” change anything and press Run";
 } else {
   // First visit (no saved work): lead with something that RUNS and looks good - the magazine test.
   codeEl.value = restoreAutosave() || `# Welcome to Ember! You already know this language \u2014 it is plain English.
