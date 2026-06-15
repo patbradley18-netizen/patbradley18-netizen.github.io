@@ -1,4 +1,4 @@
-# Ember Language Specification — ember 4.4
+# Ember Language Specification — ember 4.5
 
 This is the complete, authoritative definition of the Ember language. It is written to be
 ingested whole by an AI (or read by a person) so that correct Ember programs can be written,
@@ -225,6 +225,7 @@ Comparators (plain words only):
 | `is less than` | < (numbers required) |
 | `is at least` | ≥ (numbers required) |
 | `is at most` | ≤ (numbers required) |
+| `is even` / `is odd` (4.5, D28) | whole-number parity — a **unary** predicate, no right side: `if n is even then`. The value must be a whole number; a fractional or non-number value is a teaching error. `even`/`odd` are NOT reserved — they act special only right after `is`. |
 | `contains` (4.1) | the left value's text holds the right value's text — **ignoring case, on purpose** (D18): `if reply contains "workforce stability" then` matches "Workforce Stability". Works on any values via their text form: numbers (`12345 contains 234`), booleans (`yes`/`no`), and lists via their written-out, comma-joined form (`names contains "Nero"` — note the match looks at that joined text, so it can also match across item boundaries). Every text contains the empty text. |
 | `does not contain` (4.1) | the opposite. (`does not contains` is accepted — forgiving in; the canonical pair is `contains` / `does not contain`.) |
 
@@ -358,8 +359,9 @@ write       = "write" , expr , "at" , expr , expr ;
 when        = "when" , ( "clicked" | key , ["is"] , "pressed" ) , block ;
 key         = string | name ;
 condition   = comparison , { ("and"|"or") , comparison } ;
-comparison  = expr , ( "is" , [ "not" | "greater" "than" | "less" "than" | "at" ("least"|"most")
-            | "equal" ["to"] ] | "contains" | "does" "not" "contains" ) , expr
+comparison  = expr , ( "is" , ( "even" | "odd"   (* 4.5: unary parity test, no right side; even/odd not reserved *)
+              | [ "not" | "greater" "than" | "less" "than" | "at" ("least"|"most") | "equal" ["to"] ] , expr )
+            | "contains" , expr | "does" "not" "contains" , expr )
             (* canonical negative spelling: does not contain *) ;
 expr        = mul , { ("+"|"-") , mul } ;
 mul         = primary , { ("*"|"/") , primary } ;
@@ -380,7 +382,7 @@ commas ignored; names case-insensitive.
 
 ## 10. Versioning
 
-This document defines **ember 4.4** (0.1 = kickoff prototype; 0.2 added the .ember format,
+This document defines **ember 4.5** (0.1 = kickoff prototype; 0.2 added the .ember format,
 save/load, autosave; 0.3 added `wait`, `change … by`, forgiveness rules, did-you-mean errors,
 and the async interpreter; 0.4 added named actions — `to … with … end`, hoisting, private
 inputs, recursion guard; 1.0 — the magazine-test release — added `random`, `background`,
@@ -413,7 +415,14 @@ becomes a list of its characters) and **`letter <n> of`** (the n-th character, 1
 the `<word> of` grammar reaching into text one character at a time, earned from two independent
 external reviews (D26); and made the silent `+` text-join VISIBLE in the Debug narrator (D27) —
 when a number is absorbed into text, Debug now says `joined as text: "…"`, changing no
-program's output (apparatus, not language). Behavior changes
+program's output (apparatus, not language); 4.5 — the parity-and-polish release — added the
+**`is even`** / **`is odd`** whole-number parity tests (D28; a unary comparator, even/odd not
+reserved, fractional or non-number values teach), made the PowerShell home speak teaching errors
+in the same plain voice as the others instead of a raw exception dump (D29, the kindness
+contract — and it now shows what ran before the error), and taught every host to clean fetched
+HTML into readable text before the engine sees it (D30) so a beginner's first `ask the web` gives
+prose, not tag soup; the page also now greets a first-time visitor with a program that runs and a
+nudge toward Learn. Behavior changes
 require: a frozen copy of this spec in `spec_archive/` (append-only, per release), a golden-
 corpus replay pass (`02_QUALITY/golden/` — old programs do not break, ever), and a bump of
 the version here and in `LANGUAGE_VERSION`

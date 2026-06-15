@@ -145,7 +145,7 @@
         <tr><td>set <i>name</i> to a list</td><td>one name, many things. <code>add "Nero" to names</code> · <code>count of names</code> · <code>item 2 of names</code> (items start at 1)</td></tr>
         <tr><td>for each <i>thing</i> in <i>list</i> … end</td><td>do the lines once per item, in order. <code>for each name in names … end</code></td></tr>
         <tr><td>if <i>test</i> then … otherwise … end</td><td>choose between two paths.</td></tr>
-        <tr><td>is, is not, is greater than,<br>is less than, is at least, is at most</td><td>ways to compare. <code>if score is at least 10 then</code></td></tr>
+        <tr><td>is, is not, is greater than,<br>is less than, is at least, is at most,<br>is even, is odd</td><td>ways to compare. <code>if score is at least 10 then</code> · <code>if n is even then</code></td></tr>
         <tr><td>contains, does not contain</td><td>look inside text, ignoring case. <code>if reply contains "workforce" then</code> — numbers and lists are searched by their written form.</td></tr>
         <tr><td>+ − × ÷</td><td>math with <code>+ - * /</code> and <code>( )</code>. <code>+</code> also joins text.</td></tr>
         <tr><td>wait <i>n</i> seconds</td><td>pause, so drawings can animate. <code>wait 0.5 seconds</code></td></tr>
@@ -159,6 +159,7 @@
         <tr><td>otherwise if <i>test</i> then</td><td>chain choices without nesting — any number of links, one shared <code>end</code>. <code>if g is at least 90 then … otherwise if g is at least 80 then … otherwise … end</code></td></tr>
         <tr><td>total of, highest of,<br>lowest of, average of</td><td>one number from a whole list. <code>say total of scores</code> (sum/biggest/smallest/mean are understood too)</td></tr>
         <tr><td>words of, lines of</td><td>split text into a list. <code>for each word in words of reply … end</code> (blank lines are skipped)</td></tr>
+        <tr><td>letters of, letter <i>n</i> of</td><td>reach into text by character. <code>for each ch in letters of word … end</code> · <code>letter 1 of name</code> (letters start at 1)</td></tr>
         <tr><td>put <i>value</i> into file <i>"name"</i><br>add <i>value</i> to file <i>"name"</i></td><td>keep things between runs: <code>put</code> replaces the file, <code>add</code> appends a line. Plain names only — files live beside the program (in the terminal) or in the page's pocket (press Files). <code>put score into file "save.txt"</code></td></tr>
         <tr><td>read file <i>"name"</i> into <i>name</i></td><td>read a file's text back. A missing file reads as the empty text — programs should expect that. <code>read file "save.txt" into memory</code></td></tr>
         <tr><td>write <i>text</i> at <i>x y</i></td><td>put words on the canvas. <code>write "score: " + score at 20 30</code></td></tr>
@@ -923,6 +924,10 @@ function parse(tokens){
         "Like: if score is 10 then  —  or  —  if reply contains \"yes\" then");
     }
     next(); // 'is'
+    if(peek().type === "name" && (peek().value.toLowerCase() === "even" || peek().value.toLowerCase() === "odd")){
+      const which = next().value.toLowerCase(); // parity predicate: unary, no right operand; 'even'/'odd' are soft (not reserved)
+      return {kind:"compare", cmp:which, left, right:null, line:left.line};
+    }
     let cmp = "eq";
     if(isKw("not")){ next(); cmp = "ne"; }
     else if(isKw("greater")){ next(); eatKw("than","'is greater' should be 'is greater than'.",""); cmp = "gt"; }
@@ -1247,7 +1252,13 @@ async function interpret(program, host){
       if(c.op === "and") return l && truthy(await evalCond(c.right)); // short-circuit preserved
       return l || truthy(await evalCond(c.right));
     }
-    const l = await evalExpr(c.left), r = await evalExpr(c.right);
+    const l = await evalExpr(c.left);
+    if(c.cmp === "even" || c.cmp === "odd"){
+      const n = asNumber(l, c.line, "'is "+c.cmp+"' needs a whole number.");
+      if(Math.floor(n) !== n) throw new EmberError(c.line, "'is "+c.cmp+"' needs a whole number.", "The value was: "+toText(n));
+      return c.cmp === "even" ? (n % 2 === 0) : (n % 2 !== 0);
+    }
+    const r = await evalExpr(c.right);
     const bothNum = typeof l === "number" && typeof r === "number";
     switch(c.cmp){
       case "eq": return bothNum ? l===r : toText(l)===toText(r);
@@ -1345,7 +1356,8 @@ function explainProgram(src){
   function cond(c){
     if(c.kind === "logic") return cond(c.left) + " " + c.op + " " + cond(c.right);
     const words = {eq:"is", ne:"is not", gt:"is greater than", lt:"is less than", ge:"is at least", le:"is at most",
-                   has:"contains", nhas:"does not contain"};
+                   has:"contains", nhas:"does not contain", even:"is even", odd:"is odd"};
+    if(c.cmp === "even" || c.cmp === "odd") return ex(c.left) + " " + words[c.cmp];
     return ex(c.left) + " " + words[c.cmp] + " " + ex(c.right);
   }
   function stmt(s, d){
@@ -1458,6 +1470,7 @@ function compile(source){
       code[j].a = here();
       return;
     }
+    if(c.cmp === "even" || c.cmp === "odd"){ expr(c.left); emit("PAR", {m: c.cmp, line: c.line}); return; }
     expr(c.left); expr(c.right);
     emit("CMP", {m: c.cmp, line: c.line});
   }
@@ -1645,6 +1658,9 @@ class VM {
             case "ge": v = num(l, r) >= 0; break; case "le": v = num(l, r) <= 0; break;
           }
           this.stack.push(v); break; }
+        case "PAR": { const n = asNumber(this.stack.pop(), I.line, "'is "+I.m+"' needs a whole number.");
+          if(Math.floor(n) !== n) throw new EmberError(I.line, "'is "+I.m+"' needs a whole number.", "The value was: "+toText(n));
+          this.stack.push(I.m === "even" ? (n % 2 === 0) : (n % 2 !== 0)); break; }
         case "JZK": if(!truthy(this.stack[this.stack.length - 1])) this.pc = I.a; break;
         case "JTK": if(truthy(this.stack[this.stack.length - 1])) this.pc = I.a; break;
         case "POP": this.stack.pop(); break;
@@ -2061,7 +2077,17 @@ function makeBrowserHost(outEl, ctx, stopped, keyQueue){
       try{
         const u = /^https?:/i.test(url) ? url : "https://" + url;
         const r = await fetch(u, {mode: "cors"});
-        return (await r.text()).slice(0, 65536);
+        const ct = (r.headers.get("content-type") || "").toLowerCase();
+        let t = (await r.text()).slice(0, 400000);
+        // The host cleans HTML to readable text BEFORE the engine ever sees it, so a beginner's
+        // first 'ask the web' gives prose, not tag soup. The language never learns what HTML is.
+        if(ct.includes("html") || /<\s*(?:html|body|head|div|p|main|article)\b/i.test(t)){
+          const doc = new DOMParser().parseFromString(t, "text/html");
+          doc.querySelectorAll("script,style,noscript,template,svg").forEach(e => e.remove());
+          t = (((doc.body || doc.documentElement).textContent) || "")
+                .replace(/[ \t\u00a0]+/g, " ").replace(/\n[ \t]*\n[ \t]*\n+/g, "\n\n").replace(/^\s+|\s+$/g, "");
+        }
+        return t.slice(0, 65536);
       }catch(e){ return ""; }  // no answer is an answer: the empty text
     },
     wait(s){ return new Promise(res=>setTimeout(res, Math.max(0, s)*1000)); },
@@ -2086,127 +2112,6 @@ const EXAMPLES = {
   "Hello, Ember": `# Your first program.
 say "Hello, Ember!"
 say "Two plus two is " + (2 + 2)`,
-
-  "The circle (Josephus)": `# n people stand in a ring and count off; every 2nd is out. Who is last standing?
-# Ember has no built-in sin/cos, so we teach them (Taylor series).
-set people to 7
-set step to 2
-
-to wrap with a
-  repeat while a is greater than 3.14159265
-    change a by -6.2831853
-  end
-  repeat while a is less than -3.14159265
-    change a by 6.2831853
-  end
-  give back a
-end
-
-to sine with a
-  set a to wrap a
-  set sterm to a
-  set ssum to 0
-  set sj to 1
-  repeat 12 times
-    set ssum to ssum + sterm
-    set sterm to sterm * (0 - (a * a)) / ((2 * sj) * (2 * sj + 1))
-    change sj by 1
-  end
-  give back ssum
-end
-
-to cosine with a
-  give back sine (a + 1.5707963)
-end
-
-set centerx to 200
-set centery to 200
-set radius to 150
-set seatx to a list
-set seaty to a list
-set idx to 0
-repeat people times
-  set angle to idx * (6.2831853 / people) - 1.5707963
-  set cx to cosine angle
-  set cy to sine angle
-  add centerx + radius * cx to seatx
-  add centery + radius * cy to seaty
-  change idx by 1
-end
-
-set alive to a list
-set seat to 1
-repeat people times
-  add seat to alive
-  change seat by 1
-end
-set pos to 1
-
-say "Counting every " + step + " - watch the circle:"
-
-repeat while count of alive is greater than 1
-  background "midnightblue"
-  color "dimgray"
-  set idx to 1
-  repeat people times
-    circle (item idx of seatx) (item idx of seaty) 16
-    change idx by 1
-  end
-  color "gold"
-  for each s in alive
-    filled circle (item s of seatx) (item s of seaty) 16
-  end
-  color "black"
-  for each s in alive
-    write s at ((item s of seatx) - 4) ((item s of seaty) + 5)
-  end
-
-  set c to count of alive
-  set raw to (pos - 1) + (step - 1)
-  repeat while raw is at least c
-    change raw by -c
-  end
-  set target to raw + 1
-  set victim to item target of alive
-
-  color "red"
-  filled circle (item victim of seatx) (item victim of seaty) 18
-  color "white"
-  write victim at ((item victim of seatx) - 4) ((item victim of seaty) + 5)
-  say "  seat " + victim + " is out"
-  wait 0.9
-
-  set survivors to a list
-  set i to 0
-  for each s in alive
-    change i by 1
-    if i is not target then
-      add s to survivors
-    end
-  end
-  set alive to survivors
-
-  if target is greater than count of alive then
-    set pos to 1
-  otherwise
-    set pos to target
-  end
-end
-
-set winner to item 1 of alive
-background "midnightblue"
-color "dimgray"
-set idx to 1
-repeat people times
-  circle (item idx of seatx) (item idx of seaty) 16
-  change idx by 1
-end
-color "limegreen"
-filled circle (item winner of seatx) (item winner of seaty) 22
-color "black"
-write winner at ((item winner of seatx) - 4) ((item winner of seaty) + 5)
-write "survivor" at (centerx - 28) centery
-say "Last one standing: seat " + winner`,
 
   "Count to five": `repeat 5 times
   say "tick"
@@ -2549,7 +2454,8 @@ otherwise
   say "silence. the site may be down - or this home can't reach the web."
 end`,
 
-  "Read the page (contains)": `# fetch a page, then actually READ it
+  "Read the page (contains)": `# fetch a page (now handed back as READABLE text, not raw HTML), then search it
+# tip: this shines in the terminal - browsers often refuse other sites (CORS), which reads as silence
 say "fetching the page ..."
 ask the web for "www.patrickneilbradley.com" into reply
 if reply is "" then
@@ -2659,6 +2565,7 @@ async function run(traceMode){
     const dim = t => { const sp = document.createElement("span"); sp.className = "sys"; sp.textContent = t + "\n"; outEl.appendChild(sp); };
     host.trace = (kind, line) => { if(kind !== "set") dim("· line " + line + " — " + (NICE[kind] || kind)); };
     host.traceSet = (name, val, line) => dim("· line " + line + " — " + name + " = " + val);
+    host.traceJoin = (line, text) => dim('· line ' + line + ' — joined as text: "' + text + '"');
   }
   const src = codeEl.value;
   try{
@@ -3113,7 +3020,17 @@ if(window.GIFT_PROGRAM !== undefined){
   const tag = document.querySelector(".tag");
   if(tag) tag.textContent = "a gift, made with Ember — change anything and press Run";
 } else {
-  codeEl.value = restoreAutosave() || EXAMPLES["Hello, Ember"];
+  // First visit (no saved work): lead with something that RUNS and looks good - the magazine test.
+  codeEl.value = restoreAutosave() || `# Welcome to Ember! You already know this language \u2014 it is plain English.
+# Press Run to see it again, or change a number and watch what happens.
+# New here? Press  Learn  (top right) for 14 tiny steps to your own game.
+background "midnightblue"
+color "gold"
+repeat 60 times
+  filled circle (random 0 to 400) (random 0 to 400) (random 1 to 3)
+end
+color "white"
+write "type a thought, watch it run" at 95 205`;
 }
 run();
 </script>
